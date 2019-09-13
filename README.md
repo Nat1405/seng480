@@ -1,8 +1,11 @@
 # <Team Name>
 
 # Group Members
-1. Person A
-2. Person B 
+1. Benjamin Kwok
+2. Charlie Friend
+3. Connor McLeod
+4. Jarret Wright
+5. Nat Comeau
 
 # Projects
 
