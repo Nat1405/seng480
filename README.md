@@ -11,9 +11,9 @@
 
 | Project Name | URL | Language | KSLOC | Activity |
 |------|--------|-------|--------|---------|
-| Project 1 | https://www.github.com/rails/rails | Ruby | 45 | 54 |
-| Project 2 | | | | |
-| Project 3 | | | | |
+| Project 1 | https://www.github.com/rails/rails | Django | 45 | 54 |
+| Project 2 | | Zulip | | |
+| Project 3 | | Buildbot | | |
 
 # M0 Deliverable
 1. The purpose of this milestone is to prove you can work on Github.
