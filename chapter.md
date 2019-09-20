@@ -1,9 +1,9 @@
-# System Name and Logo
+# Zulip <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Zulip_logo.svg/1280px-Zulip_logo.svg.png" width="20" height="20"> 
 
 ## Table Of Contents
 
  1. Purpose
- 2. About XXX System
+ 2. About Zulip
  3. Stakeholders
  4. Business Goals
  5. Architecturally Significant Requirements (ASR)
@@ -33,7 +33,7 @@
 
 ## Purpose
 
-## About XX System
+## About Zulip
 
 ## Stakeholders
 
