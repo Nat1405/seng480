@@ -3,9 +3,8 @@
 # Group Members
 1. Benjamin Kwok
 2. Charlie Friend
-3. Connor McLeod
-4. Jarret Wright
-5. Nat Comeau
+3. Jarret Wright
+4. Nat Comeau
 
 # Projects
 
