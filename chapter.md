@@ -50,3 +50,34 @@
 | System Administrators	| Run the system once it has been deployed | |
 | Testers |	Test the system to ensure that it is suitable for use | |
 | Users |	Define the system’s functionality and ultimately make use of it | |
+
+
+## Business Goals
+
+Business goals can help us elicit architecturally significant requirements (ASRs).
+
+From Table 16.2 of the textbook, a list of standard business goal catagories:
+
+1. Contributing to the growth and continuity of the organization
+2. Meeting financial objectives
+3. Meeting personal objectives
+4. Meeting responsibility to employees
+5. Meeting responsibility to society
+6. Meeting responsibility to state
+7. Meeting responsibility to shareholders
+8. Managing market position
+9. Improving business processes
+10. Managing the quality and reputation of products
+11. Managing change in environmentai factors
+
+From chapter 16, business goals should be expressed as "For the system being developed, <goal-subject> desires that <goal-object> achieve <goal> in the context of <environment> and will be satisfied if <goal-measure>." We can augment this by expressing the goals value at the end of the sentence.
+
+Our 5 business goals for Zulip:
+
+1. 
+2.
+3.
+4.
+5.
+
+
