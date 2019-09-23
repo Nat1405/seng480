@@ -4,7 +4,7 @@
 
  1. Purpose
  2. About Zulip
- 3. Stakeholders
+ 3. [Stakeholders](#Stakeholders)
  4. Business Goals
  5. Architecturally Significant Requirements (ASR)
  6. Utility Tree
@@ -69,4 +69,3 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 2. <a name="r2"></a>Zulip Help, GDPR Compliance: https://zulipchat.com/help/gdpr-compliance
 3. <a name="r3"></a>Zulip History: https://zulipchat.com/history/
 4. <a name="r4"></a>Zulip Team: https://zulipchat.com/team/
-
