@@ -39,21 +39,21 @@
 
 Zulip is an open-source project, and can be used by anyone, however several stakeholders have a significant influence over the development of the project. Kandra Labs Inc. provides a commercial hosted solution for Zulip, and is run by Tim Abbott, which gives the company a significant stake in Zulip's development. Open-source contributors to Zulip also use the product regularly, giving them a stake in the project.
 
-Stakeholders for the Zulip project have been assigned to relevant categories from Rozanski and Woods' work [CITE] below:
+Stakeholders for the Zulip project have been assigned to relevant categories from Rozanski and Woods' work [[1]](#r1) below:
 
-* **Assessors:** Kandra Labs, Inc. acts as a GDPR-compliant data subprocessor for Zulip cloud services [CITE]. As such, they must ensure that Zulip has all the required features to comply with GDPR. 
+* **Assessors:** Kandra Labs, Inc. acts as a GDPR-compliant data subprocessor for Zulip cloud services [[2]](#r2). As such, they must ensure that Zulip has all the required features to comply with GDPR. 
 
 * **Communicators:** Documentation for Zulip (published on [zulip.readthedocs.io](https://zulip.readthedocs.io/en/latest/)) is maintained alongside the codebase. The open-source community is responsible for contributing changes to the online documentation as pull requests.
 
   Tim Abbott and Kandra Labs also maintain a blog for Zulip ([blog.zulip.org](http://blog.zulip.org)) and a [Twitter page](https://twitter.com/zulip?lang=en).
 
-* **Developers:** Zulip was initially developed by the members of Zulip, Inc., a small startup led by [Tim Abbott](https://github.com/timabbott) which was acquired by Dropbox in 2014 (CITE). After the project was made open-source by Dropbox in 2015, Tim Abbott continued development work with the help of the open-source community.
+* **Developers:** Zulip was initially developed by the members of Zulip, Inc., a small startup led by [Tim Abbott](https://github.com/timabbott) which was acquired by Dropbox in 2014 [[3]](#r3). After the project was made open-source by Dropbox in 2015, Tim Abbott continued development work with the help of the open-source community.
 
-* **Maintainers:** [Tim Abbott](https://github.com/timabbott) is currently Zulip's most active maintainer. Other members of the core team include [Anders Kaseorg](https://github.com/andersk) and [Rishi Gupta](https://github.com/rishig). Zulip is also maintained by several distributed developers from open-source development programs, most notably [Google Summer of Code](https://summerofcode.withgoogle.com/) and [Google Code-In](https://codein.withgoogle.com/archive/) (CITE: history page).
+* **Maintainers:** [Tim Abbott](https://github.com/timabbott) is currently Zulip's most active maintainer. Other members of the core team include [Anders Kaseorg](https://github.com/andersk) and [Rishi Gupta](https://github.com/rishig). Zulip is also maintained by several distributed developers from open-source development programs, most notably [Google Summer of Code](https://summerofcode.withgoogle.com/) and [Google Code-In](https://codein.withgoogle.com/archive/) [[3]](#r3).
 
-* **Production Engineers:** Kandra Labs provisions the infrastructure for hosted Zulip (CITE), while members of the open-source community may also deploy on-premise versions of Zulip.
+* **Production Engineers:** Kandra Labs provisions the infrastructure for hosted Zulip [[4]](#r4), while members of the open-source community may also deploy on-premise versions of Zulip.
 
-* **Suppliers: **The Zulip project is funded by an SBIR grant from the US National Science Foundation. 
+* **Suppliers:** The Zulip project is funded by an SBIR grant from the US National Science Foundation. 
 
 * **Support Staff:** Kandra Labs provides support for hosted Zulip. For the open-source project, support is provided by Tim Abbott and other members of the open-source community on the [Zulip community server](http://chat.zulip.org). 
 
@@ -62,3 +62,11 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 * **Testers:** Testing on the Zulip project is done for every pull request. Manual testing of new features is done by PR reviewers (Tim Abbott or another member of the Zulip core team), and regression testing is handled by a suite of automated front-end and back-end tests.
 
 * **Users:** Zulip is used by several corporate and open-source development teams including Akamai, Wikimedia and MariaDB. It is also used by Zulip's own development team to power the [Zulip community server](http://chat.zulip.org). 
+
+## References
+
+1. <a name="r1"></a>Software Systems Architecture, Rozanski and Woods: https://www.viewpoints-and-perspectives.info/home/stakeholders/
+2. <a name="r2"></a>Zulip Help, GDPR Compliance: https://zulipchat.com/help/gdpr-compliance
+3. <a name="r3"></a>Zulip History: https://zulipchat.com/history/
+4. <a name="r4"></a>Zulip Team: https://zulipchat.com/team/
+
