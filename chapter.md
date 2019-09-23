@@ -40,7 +40,7 @@
 #### 1 Introduction
 #### 2 Potential Privacy and Security Concerns
 
-This section assesses how Zulip currently complies with the [ACM Code of Ethics and Professional Conduct](https://www.acm.org/code-of-ethics) with regards to privacy and security. These issues are particularly relevant as this chat application is intended for company use and will be transferring potentially confidential information. Zulip is compliant with GDPR and HIPAA, which are data privacy standards for the European Union and the United States, respectively.
+This section assesses how Zulip currently complies with the [ACM Code of Ethics and Professional Conduct](https://www.acm.org/code-of-ethics) with regards to privacy and security. These issues are particularly relevant as this chat application is intended for company use and will be transferring potentially confidential information. Zulip supports compliance with GDPR and HIPAA, which are data privacy standards for the European Union and the United States, respectively.
 
 Zulip provides a fairly concise and transparent account of its data usage procedures on its [website]( https://zulipchat.com/privacy/). However, the policy fails to adequately describe the policies for data retention and disposal. Whereas the Code of Ethics section 1.6 states that this information "should be clearly defined, enforced, and communicated to data subjects", the privacy policy does not specify how long data is retained. In fact, Zulip states that even after deleting information from Zulip's services, "we may not immediately delete residual copies from our active servers and may not remove information from our backup systems."
 
