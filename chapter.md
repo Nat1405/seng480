@@ -28,7 +28,7 @@
     * Rationale
  10. Code Quality and Technical Debt
  11. Conclusion
- 
+
 ## Team 
 
 ## Purpose
@@ -36,6 +36,10 @@
 ## About Zulip
 
 ## Stakeholders
+
+Zulip is an open-source project, and can be used by anyone, however several stakeholders have a significant influence over the development of the project. Kandra Labs Inc. provides a commercial hosted solution for Zulip, and is run by Tim Abbott, which gives the company a significant stake in Zulip's development. Open-source contributors to Zulip also use the product regularly, giving them a stake in the project.
+
+Stakeholders for the Zulip project have been assigned to relevant categories from Rozanski and Woods' work [CITE] below:
 
 * **Assessors:** Kandra Labs, Inc. acts as a GDPR-compliant data subprocessor for Zulip cloud services [CITE]. As such, they must ensure that Zulip has all the required features to comply with GDPR. 
 
@@ -48,6 +52,8 @@
 * **Maintainers:** [Tim Abbott](https://github.com/timabbott) is currently Zulip's most active maintainer. Other members of the core team include [Anders Kaseorg](https://github.com/andersk) and [Rishi Gupta](https://github.com/rishig). Zulip is also maintained by several distributed developers from open-source development programs, most notably [Google Summer of Code](https://summerofcode.withgoogle.com/) and [Google Code-In](https://codein.withgoogle.com/archive/) (CITE: history page).
 
 * **Production Engineers:** Kandra Labs provisions the infrastructure for hosted Zulip (CITE), while members of the open-source community may also deploy on-premise versions of Zulip.
+
+* **Suppliers: **The Zulip project is funded by an SBIR grant from the US National Science Foundation. 
 
 * **Support Staff:** Kandra Labs provides support for hosted Zulip. For the open-source project, support is provided by Tim Abbott and other members of the open-source community on the [Zulip community server](http://chat.zulip.org). 
 
