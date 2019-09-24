@@ -75,6 +75,7 @@ Because Zulip allows users to deploy their own server, it is important that the 
 
 ## Business Goals
 
+<<<<<<< HEAD
 Our 5 business goals for Zulip:
 
 1. The Zulip team wishes for Zulip to be a more effective communication system than Slack, specifically for remote workers. This goal will be satisified if users of Zulip only need this single communication application and no longer need to use email and video meetings [1].
@@ -87,6 +88,5 @@ Our 5 business goals for Zulip:
 [2] (Kandra Labs Incorporation Papers) [https://icis.corp.delaware.gov/Ecorp/EntitySearch/NameSearch.aspx]
 [3] (Zulip Roadmap)[https://zulip-ck.readthedocs.io/en/latest/roadmap.html]
 [4] (Zulip Roadmap)[https://zulip.readthedocs.io/en/latest/overview/roadmap.html]
-
 
 
