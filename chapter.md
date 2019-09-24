@@ -75,30 +75,18 @@ Because Zulip allows users to deploy their own server, it is important that the 
 
 ## Business Goals
 
-Business goals can help us elicit architecturally significant requirements (ASRs).
-
-From Table 16.2 of the textbook, a list of standard business goal catagories:
-
-1. Contributing to the growth and continuity of the organization
-2. Meeting financial objectives
-3. Meeting personal objectives
-4. Meeting responsibility to employees
-5. Meeting responsibility to society
-6. Meeting responsibility to state
-7. Meeting responsibility to shareholders
-8. Managing market position
-9. Improving business processes
-10. Managing the quality and reputation of products
-11. Managing change in environmentai factors
-
-From chapter 16, business goals should be expressed as "For the system being developed, <goal-subject> desires that <goal-object> achieve <goal> in the context of <environment> and will be satisfied if <goal-measure>." We can augment this by expressing the goals value at the end of the sentence.
-
 Our 5 business goals for Zulip:
 
-1. 
-2.
-3.
-4.
-5.
+1. The Zulip team wishes for Zulip to be a more effective communication system than Slack, specifically for remote workers. This goal will be satisified if users of Zulip only need this single communication application and no longer need to use email and video meetings [1].
+2. The parent corperation of Zulip, Kandra Labs, wants Zulip to turn a profit from its enterprise and standard plans [2].
+3. The Zulip developers want Zulip to have an appealing visual design [3].
+4. The Zulip developers want to build out the API, bots, and integrations framework for both the server and client system [4].
+5. The Zulip developers want the Zulip server system to scale well to 10,000 users in a realm [3].
+
+[1] (Why Zulip)[https://zulipchat.com/why-zulip/]
+[2] (Kandra Labs Incorporation Papers) [https://icis.corp.delaware.gov/Ecorp/EntitySearch/NameSearch.aspx]
+[3] (Zulip Roadmap)[https://zulip-ck.readthedocs.io/en/latest/roadmap.html]
+[4] (Zulip Roadmap)[https://zulip.readthedocs.io/en/latest/overview/roadmap.html]
+
 
 
