@@ -101,3 +101,19 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 9. Zulip Help, GDPR Compliance: https://zulipchat.com/help/gdpr-compliance
 10. Zulip History: https://zulipchat.com/history/
 11. Zulip Team: https://zulipchat.com/team/
+
+## Business Goals
+
+1. The Zulip developers wish for Zulip to be a more effective communication system than Slack, specifically for remote workers. This goal will be satisified if users of Zulip need to use email and video meetings significantly less [1].
+2. The parent corporation of Zulip, Kandra Labs, wants Zulip to turn a profit from its enterprise and standard plans [2].
+3. The Zulip developers want Zulip to have an appealing and intuitive visual design that is friendly to new client users or Zulip Server users [3].
+4. The Zulip developers want to build out the API, bots, and integrations framework for both the server and client system [4].
+5. The Zulip developers want the Zulip server system to scale well to 10,000 users in a realm [3].
+6. The Zulip developers want Zulip to be available on all desktop and mobile platforms while minimizing the work needed to maintain multiple code bases [3].
+
+### References
+
+1. (Why Zulip)[https://zulipchat.com/why-zulip/]
+2. (Kandra Labs Incorporation Papers)[https://icis.corp.delaware.gov/Ecorp/EntitySearch/NameSearch.aspx]
+3. (Zulip Roadmap)[https://zulip-ck.readthedocs.io/en/latest/roadmap.html]
+4. (Zulip Roadmap)[https://zulip.readthedocs.io/en/latest/overview/roadmap.html]
