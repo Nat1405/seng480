@@ -35,9 +35,20 @@
 
 ## About Zulip
 
+Simply talking to Slack users in professional settings show most users only actively use a fraction of the channels they belong to, and the higher up the company ladder you go, the more true this becomes. Only having one channel per team or project often means juggling many topics or conversations at once. All these overlap making asynchronous work difficult as important questions or information is often lost in the shuffle under the mountain of sundry common to such channels.
+
+Zulip is a chat application started in 2012 and acquired by Dropbox in 2014. Open-sourced in 2015 under the Apache License, they report to having contributions from close to 500 people. Boasting apps for all platforms, a unique threading system allowing for superior conversation sorting and searching, and integrations for over 100 services, Zulip is a powerful tool designed specifically for an asynchronous and distributed workforce.
+
+Zulip believes "asynchronous communication is fundamental" to modern work. In order to counter the issues outlined above, Zulip's versions of channels (called Streams) use "Topics" as tags for every message so sorting conversations can be done at a touch. Transforming confusing walls of text into intelligible threads that immediately make sense to the user.
+
 ## Privacy, Security, and Ethics
 
 #### 1 Introduction
+
+Zulip is used by thousands of teams worldwide[16], this includes many companies internal communications and are part of records that can contain confidential client information. Being used so widely, Zulip needs to respect data privacy standards in many countries. However this necessity is complicated by the need to retain information for said records in accordance with other laws and company policy demands.
+
+Zulip's ethical position may also be compromised by who chooses to use the service as their choices and desires, for better or for worse, will influence Zulip as a whole.
+
 #### 2 Potential Privacy and Security Concerns
 
 This section assesses how Zulip currently complies with the ACM Code of Ethics and Professional Conduct with regards to privacy and security [1]. These issues are particularly relevant as this chat application is intended for company use and will be transferring potentially confidential information. Zulip supports compliance with GDPR and HIPAA, which are data privacy standards for the European Union and the United States, respectively.
@@ -54,11 +65,16 @@ This section will attempt to analyze potential ethical dilemmas that Zulip will 
 
 One potential ethical dilemma that Zulip faces is the potential ability of paying users, corporate or otherwise, to influence the project. Unlike many other open source projects, Zulip offers multiple payment plans for potential users [5] including a standard paid version and, more importantly, an Enterprise payment plan which offers the benefit "Input into the Zulip roadmap." It is possible for this option to influence the direction of the project in a way that disproportionately favours enterprises that heavily fund Zulip. Zulip will need to understand when this is happening and decide whether the funding is valuable enough to outweigh the potential downsides. 
 
-Because Zulip stores the private messages and data of users, provided they are not hosting their own server, there is the potential that incriminating messages will be sent using the platform. This could lead to a situation where Zulip must decide whether or not the chat logs and data will be released to the authorities or if the privacy of the users will be prioritized. This dilemma falls broadly under section 1.6 and 1.7 of the ACM Code of Ethics and Professional Conduct (Respect Privacy and Honor Confidentiality respectively). If Zulip is faced with this choice, they will need to evaluate their stance as a company and set a precedent for all future decisions of this type. 
+Because Zulip stores the private messages and data of users, provided they are not hosting their own server, there is the potential that incriminating messages will be sent using the platform. This could lead to a situation where Zulip must decide whether or not the chat logs and data will be released to the authorities or if the privacy of the users will be prioritized. This dilemma falls broadly under section 1.6 and 1.7 of the ACM Code of Ethics and Professional Conduct (Respect Privacy and Honor Confidentiality respectively). If Zulip is faced with this choice, they will need to evaluate their stance as a company and set a precedent for all future decisions of this type.
 
 A final issue that Zulip may be faced with in the future is one of free speech. As has been seen on multiple social media platforms in recent years, such as Facebook [6] and Reddit [7] ,the possibility of an individual or group starting a potentially offensive or dangerous group on Zulip is possible. This issue is further clouded by Zulip's allowance of users to host the application off of their own servers. In the future Zulip may have to make case by case decisions on whether or not to allow groups to exist on their application. 
 
 #### 4 Summary
+
+As a service Zulip contends with many of the same ethical issues of many other large companies: Security and Integrity of their system, and Privacy of their clients. While strong in the first, the latter two still hold concerns. Weakness to 3rd party integrations, and the inability for users to remove their personal data with any degree of certainty means there is still a way to go.
+
+Even giant companies like Facebook and Google struggle to toe the line in regards to their ethical responsibilities. For an open source project, that anyone could try to corrupt with poorly written or malicious additions, makes the responsibility of the owners that much heavier.
+
 
 ## Stakeholders
 
@@ -114,3 +130,4 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 13. Kandra Labs Incorporation Papers https://icis.corp.delaware.gov/Ecorp/EntitySearch/NameSearch.aspx
 14. Zulip Roadmap https://zulip-ck.readthedocs.io/en/latest/roadmap.html
 15. Zulip Roadmap https://zulip.readthedocs.io/en/latest/overview/roadmap.html
+16. Zulip Homepage https://zulipchat.com/
