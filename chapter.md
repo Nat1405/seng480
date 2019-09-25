@@ -75,11 +75,9 @@ Because Zulip allows users to deploy their own server, it is important that the 
 
 ## Business Goals
 
-Our 5 business goals for Zulip:
-
-1. The Zulip team wishes for Zulip to be a more effective communication system than Slack, specifically for remote workers. This goal will be satisified if users of Zulip only need this single communication application and no longer need to use email and video meetings [1].
-2. The parent corperation of Zulip, Kandra Labs, wants Zulip to turn a profit from its enterprise and standard plans [2].
-3. The Zulip developers want Zulip to have an appealing visual design [3].
+1. The Zulip developers wish for Zulip to be a more effective communication system than Slack, specifically for remote workers. This goal will be satisified if users of Zulip need to use email and video meetings significantly less [1].
+2. The parent corporation of Zulip, Kandra Labs, wants Zulip to turn a profit from its enterprise and standard plans [2].
+3. The Zulip developers want Zulip to have an appealing and intuitive visual design that is friendly to new client or server users [3].
 4. The Zulip developers want to build out the API, bots, and integrations framework for both the server and client system [4].
 5. The Zulip developers want the Zulip server system to scale well to 10,000 users in a realm [3].
 
