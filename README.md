@@ -5,6 +5,7 @@
 2. Charlie Friend
 3. Jarret Wright
 4. Nat Comeau
+5. Connor McLeod
 
 # Projects
 
