@@ -60,13 +60,13 @@ A final issue that Zulip may be faced with in the future is one of free speech. 
 
 #### 4 Summary
 #### 5 Sources
-[1] ACM Code of Ethics and Professional Conduct https://www.acm.org/code-of-ethics   
-[2] Zulip Privacy Policy https://zulipchat.com/privacy/  
-[3] Zulip Security Model https://zulip.readthedocs.io/en/stable/production/security-model.html  
-[4] Zulip Release Announcements https://groups.google.com/forum/#%21forum/zulip-announce  
-[5] Zulip Payment Plans https://zulipchat.com/plans/  
-[6] Facebook Censorship Article https://globalnews.ca/news/5141557/facebook-bans-extremism-hate-policy/  
-[7] Reddit Censorship Article https://www.theverge.com/2019/3/15/18267645/reddit-watchpeopledie-ban-new-zealand-mosque-massacre-christchurch  
+1. ACM Code of Ethics and Professional Conduct https://www.acm.org/code-of-ethics   
+2. Zulip Privacy Policy https://zulipchat.com/privacy/  
+3. Zulip Security Model https://zulip.readthedocs.io/en/stable/production/security-model.html  
+4. Zulip Release Announcements https://groups.google.com/forum/#%21forum/zulip-announce  
+5. Zulip Payment Plans https://zulipchat.com/plans/  
+6. Facebook Censorship Article https://globalnews.ca/news/5141557/facebook-bans-extremism-hate-policy/  
+7. Reddit Censorship Article https://www.theverge.com/2019/3/15/18267645/reddit-watchpeopledie-ban-new-zealand-mosque-massacre-christchurch  
 
 ## Stakeholders
 
