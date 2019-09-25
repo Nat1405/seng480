@@ -45,7 +45,7 @@ Zulip believes "asynchronous communication is fundamental" to modern work. In or
 
 #### 1 Introduction
 
-Zulip is used by thousands of teams worldwide[16], this includes many companies internal communications and are part of records that can contain confidential client information. Being used so widely, Zulip needs to respect data privacy standards in many countries. However this necessity is complicated by the need to retain information for said records in accordance with other laws and company policy demands.
+Zulip is used by thousands of teams worldwide[16], this includes many companies internal communications and are part of records that can contain confidential client information. Being used so widely, Zulip needs to conform to data privacy standards in many countries. However this necessity is complicated by the need to retain information for said records in accordance with other laws and company policy demands.
 
 Zulip's ethical position may also be compromised by who chooses to use the service as their choices and desires, for better or for worse, will influence Zulip as a whole.
 
