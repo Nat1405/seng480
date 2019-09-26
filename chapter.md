@@ -35,21 +35,21 @@
 
 ## About Zulip
 
-Simply talking to Slack users in professional settings show most users only actively use a fraction of the channels they belong to, and the higher up the company ladder you go, the more true this becomes. Only having one channel per team or project often means juggling many topics or conversations at once. All these overlap making asynchronous work difficult as important questions or information is often lost in the shuffle under the mountain of sundry common to such channels.
+Many Slack users only actively use a fraction of the channels they belong to. This problem becomes more prevalent in positions higher up the company ladder. Having only one channel per team or project often means juggling many topics or conversations at once. This overlap makes asynchronous work difficult as important information is often lost among the mountain of recent messages.
 
-Zulip is a chat application started in 2012 and acquired by Dropbox in 2014. Open-sourced in 2015 under the Apache License, they report to having contributions from close to 500 people. Boasting apps for all platforms, a unique threading system allowing for superior conversation sorting and searching, and integrations for over 100 services, Zulip is a powerful tool designed specifically for an asynchronous and distributed workforce.
+Zulip is a chat application started in 2012 and acquired by Dropbox in 2014. Open-sourced in 2015 under the Apache License, they report to having contributions from approximately 500 people. Boasting apps for all platforms, a unique threading system allowing for superior conversation sorting and searching, and integrations for over 100 services, Zulip is a powerful tool designed specifically for an asynchronous and distributed workforce.
 
-Zulip believes "asynchronous communication is fundamental" to modern work. In order to counter the issues outlined above, Zulip's versions of channels (called Streams) use "Topics" as tags for every message so sorting conversations can be done at a touch. Transforming confusing walls of text into intelligible threads that immediately make sense to the user.
+Zulip believes "asynchronous communication is fundamental" to modern work. In order to counter the issues outlined above, Zulip's versions of channels (called Streams) use "Topics" as tags for every message so sorting conversations can be done at a touch. This transforms confusing walls of text into threads that immediately make sense to the user.
 
 ## Privacy, Security, and Ethics
 
-#### 1 Introduction
+#### Introduction
 
-Zulip is used by thousands of teams worldwide[16], this includes many companies internal communications and are part of records that can contain confidential client information. Being used so widely, Zulip needs to conform to data privacy standards in many countries. However this necessity is complicated by the need to retain information for said records in accordance with other laws and company policy demands.
+Zulip is used by thousands of teams worldwide to manage internal communications which could contain confidential client information [16]. Due to its wide use, Zulip needs to conform to data privacy standards in many countries. However, this necessity is complicated by the need to retain information for said records in accordance with other laws and company policy demands.
 
-Zulip's ethical position may also be compromised by who chooses to use the service as their choices and desires, for better or for worse, will influence Zulip as a whole.
+Zulip's ethical position may also be compromised by malicious user groups as their usage could influence Zulip negatively.
 
-#### 2 Potential Privacy and Security Concerns
+#### Potential Privacy and Security Concerns
 
 This section assesses how Zulip currently complies with the ACM Code of Ethics and Professional Conduct with regards to privacy and security [1]. These issues are particularly relevant as this chat application is intended for company use and will be transferring potentially confidential information. Zulip supports compliance with GDPR and HIPAA, which are data privacy standards for the European Union and the United States, respectively.
 
@@ -59,7 +59,7 @@ In addition, although you may deactivate your account as a user, it is unclear h
 
 Because Zulip allows users to deploy their own server, it is important that the security features of Zulip are simple to use and well-documented. Zulip provides documentation overviewing its security features [3]. To supplement this, there is a Zulip community server providing product support, as well as a Google group for users to report security bugs and receive security updates. In accordance with the Code of Ethics, the Zulip development team seems responsive to security bugs, issuing 3 dedicated security patches out of the last 13 updates [4]. As with other chat apps, a Zulip server may be vulnerable to its users unintentionally exposing data through the misuse of 3rd party integrations, as well as through administrators failing to deactivate old accounts, such as those for ex-employees.
 
-#### 3 Ethical Dilemmas
+#### Ethical Dilemmas
 
 This section will attempt to analyze potential ethical dilemmas that Zulip will face as an open source project. Since Zulip is a chat application, the vast majority of potential ethical problems stem from privacy and confidentiality issues so that is where we have focused our analysis. 
 
@@ -69,12 +69,11 @@ Because Zulip stores the private messages and data of users, provided they are n
 
 A final issue that Zulip may be faced with in the future is one of free speech. As has been seen on multiple social media platforms in recent years, such as Facebook [6] and Reddit [7] ,the possibility of an individual or group starting a potentially offensive or dangerous group on Zulip is possible. This issue is further clouded by Zulip's allowance of users to host the application off of their own servers. In the future Zulip may have to make case by case decisions on whether or not to allow groups to exist on their application. 
 
-#### 4 Summary
+#### Summary
 
-As a service Zulip contends with many of the same ethical issues of many other large companies: Security and Integrity of their system, and Privacy of their clients. While strong in the first, the latter two still hold concerns. Weakness to 3rd party integrations, and the inability for users to remove their personal data with any degree of certainty means there is still a way to go.
+As a service, Zulip contends with many of the same ethical issues of many other large companies: security and integrity of their system, and privacy of their clients. While strong in the security, the latter two aspects still hold concerns for Zulip. A vulnerability to negligent use of 3rd party integrations and the inability for users to remove their personal data with any degree of certainty means there is still a way to go.
 
-Even giant companies like Facebook and Google struggle to toe the line in regards to their ethical responsibilities. For an open source project, that anyone could try to corrupt with poorly written or malicious additions, makes the responsibility of the owners that much heavier.
-
+Even giant companies like Facebook and Google struggle to toe the line in regards to their ethical responsibilities. For an open source project that could be corrupted with poorly written or malicious additions, makes the responsibility of the owners that much heavier.
 
 ## Stakeholders
 
@@ -106,7 +105,7 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 
 ## Business Goals
 
-1. The Zulip developers wish for Zulip to be a more effective communication system than Slack, specifically for remote workers. This goal will be satisified if users of Zulip need to use email and video meetings significantly less [12].
+1. The Zulip developers wish for Zulip to be a more effective communication system than Slack, specifically for remote workers. This goal will be satisfied if users of Zulip need to use email and video meetings significantly less [12].
 2. The parent corporation of Zulip, Kandra Labs, wants Zulip to turn a profit from its enterprise and standard plans [13].
 3. The Zulip developers want Zulip to have an appealing and intuitive visual design that is friendly to new client users or Zulip Server users [14].
 4. The Zulip developers want to build out the API, bots, and integrations framework for both the server and client system [15].
