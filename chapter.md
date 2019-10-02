@@ -112,6 +112,10 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 5. The Zulip developers want the Zulip server system to scale well to 10,000 users in a realm [3].
 6. The Zulip developers want Zulip to be available on all desktop and mobile platforms while minimizing the work needed to maintain multiple code bases [14].
 
+## Utility Tree
+
+![Utility Tree](images/utility-tree.png)
+
 ### References
 
 1. ACM Code of Ethics and Professional Conduct https://www.acm.org/code-of-ethics   
