@@ -130,3 +130,49 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 14. Zulip Roadmap https://zulip-ck.readthedocs.io/en/latest/roadmap.html
 15. Zulip Roadmap https://zulip.readthedocs.io/en/latest/overview/roadmap.html
 16. Zulip Homepage https://zulipchat.com/
+
+## Architecturally Significant Requirements:
+
+1. No additional code changes should be required to implement a feature on the Android and iOS mobile applications (business requirement 6).
+
+2. Zulip should support dedicated apps for Windows, iOS, Android, Linux, MacOS, web browsers, chat clients, and Zulip API clients with a minimum of code duplication [1].
+
+3. New users should be able to explain the concepts of topics and streams within 10 minutes of using Zulip (business requirement 3).
+
+4. Zulip should have a REST API with less than 120 total endpoints [2].
+
+5. Under load of 10,000 simultaneous users, all Zulip API endpoints should respond in under 30 milliseconds (business requirement 5).
+
+6. Zulip must support real-time sync between server and client [3].
+
+7. Python files in the Zulip server project should have unit test coverage of more than 90% by line [4].
+
+8. Allow open-source contributors to extend the app by submitting new features.
+
+9. Manage traffic between clients and Zulip with enterprise-grade security.
+
+10. Support a wide range of authentication methods including email/password and Google.
+
+11. Support a range of user types: administrators, members, guests, and bots
+    - Bot users should be able to automate user actions.
+    - Guest users should not have access to public streams.
+    - Realm administrators should be able to do the majority of realm configuration on the web. See the documentation for realm administrators [5].
+
+12. Support hosting for user-uploaded files.
+
+13. Support integration with hundreds of custom webhooks.
+
+14. Be deployable as both a cloud service and an on-premise solution.
+
+15. Support GDPR Compliance.
+
+16. Support searching through message history [6].
+
+### References
+
+[1] https://stackshare.io/tabbott/decisions
+[2] https://zulipchat.com/security/
+[3] https://zulip.readthedocs.io/en/latest/subsystems/events-system.html
+[4] https://zulip.readthedocs.io/en/latest/contributing/code-reviewing.html#zulip-server
+[5] https://zulip.readthedocs.io/en/latest/production/settings.html#making-changes
+[6] https://zulip.readthedocs.io/en/latest/production/security-model.html#users-and-bots
