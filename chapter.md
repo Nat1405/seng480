@@ -116,6 +116,23 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 
 ![Utility Tree](images/utility-tree.png)
 
+## Quality Attribute Scenarios
+Aspect|Details
+---|---
+Scenario Name|Server Scalability
+---|---
+Business Goals|Allow for a stable usage experience even under extreme loads
+---|---
+Quality Attribute|Performance
+---|---
+Stimulus|User joins server hosting many other active users
+---|---
+Stimulus Source|Zulip User
+---|---
+Response|Server continues running normally
+---|---
+Response Measure|Users do not notice and drop in performance when sending and recieving messages on the server
+
 ### References
 
 1. ACM Code of Ethics and Professional Conduct https://www.acm.org/code-of-ethics   
