@@ -112,13 +112,10 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 5. The Zulip developers want the Zulip server system to scale well to 10,000 users in a realm [3].
 6. The Zulip developers want Zulip to be available on all desktop and mobile platforms while minimizing the work needed to maintain multiple code bases [14].
 
-<<<<<<< HEAD
-
 ## Utility Tree
 
 ![Utility Tree](images/utility-tree.png)
 
-<<<<<<< HEAD
 ## Quality Attribute Scenarios
 
 Server Performance
@@ -169,9 +166,6 @@ Stimulus Source|Client or 3rd Party Integration
 Response| Server sends response data
 Response Measure|Data is received within 30 milliseconds of the request being sent
 
-=======
-=======
->>>>>>> e28bf7bcc0f71a2a1838c6e3bbda4f30cd26b4fd
 ## Architecturally Significant Requirements:
 
 1. No additional code changes should be required to implement a feature on the Android and iOS mobile applications (see business goal 6).
@@ -195,7 +189,6 @@ Response Measure|Data is received within 30 milliseconds of the request being se
 14. Zulip should be deployable as both a cloud service and an on-premise solution.
 15. Zulip should support GDPR Compliance.
 16. Zulip should support searching through message history [22].
->>>>>>> upstream/master
 
 ### References
 
