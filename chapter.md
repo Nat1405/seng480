@@ -117,8 +117,11 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 ![Utility Tree](images/utility-tree.png)
 
 ## Quality Attribute Scenarios
+
+Server Performance
+
 Aspect|Details
----|:---
+:---|:---
 Scenario Name|Server Scalability
 Business Goals|Allow for a stable usage experience even under extreme loads
 Quality Attribute|Performance
@@ -126,6 +129,43 @@ Stimulus|User joins server hosting many other active users
 Stimulus Source|Zulip User
 Response|Server continues running normally
 Response Measure|Users do not notice and drop in performance when sending and recieving messages on the server
+
+Ease of Mobile Code Extensibility
+
+Aspect|Details
+:---|:---
+Scenario Name|Modify Mobile Client
+Business Goals|Allow for easy addition of new features
+Quality Attribute|Extensibility
+Stimulus|A developer adds a new feature to the zulip mobile client
+Stimulus Source|Zulip Developer
+Response|The feature is implemented and the new client is sent out
+Response Measure|The existing codebase is unmodified by the new changes
+
+New User Onboarding Process
+
+Aspect|Details
+:---|:---
+Scenario Name|New User Understands Zulip
+Business Goals|New users should be able to understand and use zulip, including streams and topics, with minimal effort and time spent
+Quality Attribute|Usability
+Stimulus|User starts using Zulip for the first time
+Stimulus Source|New Zulip User
+Response|User is proficient at using Zulip, and understands the usage of streams and topics
+Response Measure|User feels comfortable using Zulip and its features within 10 minutes
+
+API Performance
+
+Aspect|Details
+:---|:---
+Scenario Name|API Response Time
+Business Goals|Have a high performance API allowing for a responsive user experience and low latency mobile applications
+Quality Attribute|Performance
+Stimulus|Source requests data from an API endpoint while server is under load
+Stimulus Source|User or Mobile/Web Application
+Response| Server sends request data
+Response Measure|Data is received within 30 milliseconds of the request being sent
+
 
 ### References
 
