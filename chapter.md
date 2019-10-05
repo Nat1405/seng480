@@ -112,14 +112,60 @@ Stakeholders for the Zulip project have been assigned to relevant categories fro
 5. The Zulip developers want the Zulip server system to scale well to 10,000 users in a realm [3].
 6. The Zulip developers want Zulip to be available on all desktop and mobile platforms while minimizing the work needed to maintain multiple code bases [14].
 
-<<<<<<< HEAD
-
 ## Utility Tree
 
 ![Utility Tree](images/utility-tree.png)
 
-=======
->>>>>>> e28bf7bcc0f71a2a1838c6e3bbda4f30cd26b4fd
+## Quality Attribute Scenarios
+
+Server Performance
+
+Aspect|Details
+:---|:---
+Scenario Name|Server Scalability
+Business Goals|Allow for a stable usage experience even under extreme loads
+Quality Attribute|Performance
+Stimulus|User joins server hosting at least 10,000 simultaneous users
+Stimulus Source|Zulip User
+Response|Server continues running normally
+Response Measure|Messages send to the server, and are received from the server in under 30 milliseconds
+
+Ease of Mobile Code Extensibility
+
+Aspect|Details
+:---|:---
+Scenario Name|Modify Mobile Client
+Business Goals|Allow for easy addition of new features
+Quality Attribute|Extensibility
+Stimulus|A developer adds a new feature to the Zulip mobile client
+Stimulus Source|Zulip Developer
+Response|The feature is implemented and the new version of the client is sent out
+Response Measure|The feature is ported between mobile platforms without additional effort.
+
+New User Onboarding Process
+
+Aspect|Details
+:---|:---
+Scenario Name|New User Understands Zulip
+Business Goals|New users should be able to understand and use Zulip, including streams and topics, with minimal effort and time spent
+Quality Attribute|Usability
+Stimulus|User starts using Zulip for the first time
+Stimulus Source|New Zulip User
+Response|User is proficient at using Zulip, and understands the usage of streams and topics
+Response Measure|User can explain the concepts of streams and topics, and can use these features within Zulip
+
+API Performance
+
+Aspect|Details
+:---|:---
+Scenario Name|API Response Time
+Business Goals|Have a high performance API allowing for a responsive user experience and a low latency client
+Quality Attribute|Performance
+Stimulus|Source requests data from an API endpoint
+Stimulus Source|Client or 3rd Party Integration
+Response| Server sends response data
+Response Measure|Data is received within 30 milliseconds of the request being sent
+
 ## Architecturally Significant Requirements:
 
 1. No additional code changes should be required to implement a feature on the Android and iOS mobile applications (see business goal 6).
