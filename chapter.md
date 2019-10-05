@@ -125,10 +125,10 @@ Aspect|Details
 Scenario Name|Server Scalability
 Business Goals|Allow for a stable usage experience even under extreme loads
 Quality Attribute|Performance
-Stimulus|User joins server hosting many other active users
+Stimulus|User joins server hosting at least 10,000 simultaneous users
 Stimulus Source|Zulip User
 Response|Server continues running normally
-Response Measure|Users do not notice a drop in performance when sending and receiving messages on the server
+Response Measure|Messages send to the server, and are received from the server in under 30 milliseconds
 
 Ease of Mobile Code Extensibility
 
@@ -152,7 +152,7 @@ Quality Attribute|Usability
 Stimulus|User starts using Zulip for the first time
 Stimulus Source|New Zulip User
 Response|User is proficient at using Zulip, and understands the usage of streams and topics
-Response Measure|User feels comfortable using Zulip and its features within 10 minutes
+Response Measure|User can explain the concepts of streams and topics, and can use these features within Zulip
 
 API Performance
 
@@ -161,7 +161,7 @@ Aspect|Details
 Scenario Name|API Response Time
 Business Goals|Have a high performance API allowing for a responsive user experience and a low latency client
 Quality Attribute|Performance
-Stimulus|Source requests data from an API endpoint while server is under load
+Stimulus|Source requests data from an API endpoint
 Stimulus Source|Client or 3rd Party Integration
 Response| Server sends response data
 Response Measure|Data is received within 30 milliseconds of the request being sent
