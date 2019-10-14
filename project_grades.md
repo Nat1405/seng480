@@ -40,7 +40,7 @@ I would've liked to see a more comprehensive handling of the ACM code of ethics.
 
 -----
 
-# Milestone 2 [ / 10]
+# Milestone 2 [9.5 / 10]
 
 ## Marking Guide
 - extensive list of ASRs, bullet form fine. Derived from business goals. (3)
@@ -54,9 +54,11 @@ Marks deducted:
 - poor technical writing
 - Quality of scenarios (clear analysis of stimulus, response, response measure)
 
-
 ## Notes M2
 (explaining why marks were deducted)
+
+Scenarios:
+- For your second scenario, how do you plan on measuring the response _measure_? It seems identical to the response itself specified above it. (-0.5)
 
 -----
 
