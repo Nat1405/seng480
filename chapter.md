@@ -209,7 +209,7 @@ Response Measure|Data is received within 30 milliseconds of the request being se
 - zerver/models.py - Django models.  
 - zerver/tornado/event_queue.py - Logic for the real-time push system.  
 - zerver/views/\*.py - Django views.  
-- zerver/views/events_register.py - Handling for requests that need to be - synced with other clients.  
+- zerver/views/events_register.py - Handling for requests that need to be synced with other clients.  
 - zerver/webhooks/\* - Webhooks for integrations.  
 - zerver/workers/queue_processors.py - Definition for a worker in the RabbitMQ - queue.  
 - templates/zerver/\* - Django templates using Jinja2.  
