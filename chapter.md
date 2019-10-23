@@ -199,7 +199,7 @@ Response Measure|Data is received within 30 milliseconds of the request being se
 ## Element Catalog
 
 ### Elements and Properties
-- zproject/backends.py - Configuration for any authentication systems in - addition to Django's default system.  
+- zproject/backends.py - Configuration for any authentication systems in addition to Django's default system.  
 - zproject/urls.py - List of URLs and the Django views they map to.  
 - zerver/lib/actions.py - Functions for writing to database tables.  
 - zerver/lib/events.py - Functions for fetching server state atomically.  
