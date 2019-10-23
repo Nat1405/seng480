@@ -211,7 +211,7 @@ Response Measure|Data is received within 30 milliseconds of the request being se
 - zerver/views/\*.py - Django views.  
 - zerver/views/events_register.py - Handling for requests that need to be synced with other clients.  
 - zerver/webhooks/\* - Webhooks for integrations.  
-- zerver/workers/queue_processors.py - Definition for a worker in the RabbitMQ - queue.  
+- zerver/workers/queue_processors.py - Definition for a worker in the RabbitMQ queue.  
 - templates/zerver/\* - Django templates using Jinja2.  
 - Nginx - Front-end web server that handles all HTTP requests.  
 - RabbitMQ - Message broker used to manage a set of queues.  
