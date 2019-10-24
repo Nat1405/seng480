@@ -203,7 +203,7 @@ The above diagram details one of Zulip's most performance-critical paths, from t
 * Zulip enqueues a notification in each of the clients' event queues.
 * Tornado pulls the messages off of the event queues and sends them to their clients:
   * Mobile clients receive messages via long polling.
-  * Web clients are typically connected via a Websocket connection, but can also use a long polling approach if Websockets are not supported.
+  * Web clients are typically connected via a WebSocket connection, but can also use a long polling approach if WebSockets are not supported.
 
 ### References
 
