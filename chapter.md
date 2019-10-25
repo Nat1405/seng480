@@ -15,7 +15,7 @@
       + Elements and Properties
       + Relations and Properties
     * Context Diagram
-    * [Behaviour Diagram](#Behavior-Diagram)
+    * [Behaviour Diagram](#Behaviour-Diagram)
     * Rationale
  9. Component and Connector View
     * Primary Presentation
