@@ -9,14 +9,13 @@
  5. Architecturally Significant Requirements (ASR)
  6. Utility Tree
  7. Quality Attribute Scenarios (QAS)
- 8. Module View
-    * Primary Presentation
-    * Element Catalog
+ 8. [Module View](#Module-View)
+    * [Primary Presentation](#Primary-Presentation)
+    * [Element Catalog](#Element-Catalog)
       + Elements and Properties
       + Relations and Properties
-      + Element Behaviour
     * Context Diagram
-    * Behaviour Diagram
+    * [Behaviour Diagram](#Behavior-Diagram)
     * Rationale
  9. Component and Connector View
     * Primary Presentation
