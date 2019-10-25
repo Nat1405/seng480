@@ -14,9 +14,10 @@
     * [Element Catalog](#Element-Catalog)
       + Elements and Properties
       + Relations and Properties
-    * Context Diagram
+    * [Context Diagram](#Context-Diagram)
     * [Behaviour Diagram](#Behaviour-Diagram)
-    * Rationale
+    * [Interfaces](#Interfaces)
+    * [Module Rationale](#Module-Rationale)
  9. Component and Connector View
     * Primary Presentation
     * Element Catalog
@@ -188,6 +189,56 @@ Response Measure|Data is received within 30 milliseconds of the request being se
 14. Zulip should be deployable as both a cloud service and an on-premise solution.
 15. Zulip should support GDPR Compliance.
 16. Zulip should support searching through message history [22].
+
+
+# Module View
+
+## Primary Presentation
+
+![Primary Presentation](./images/primary-presentation.png)
+
+## Element Catalog
+
+### Elements and Properties
+- zproject/backends.py - Configuration for any authentication systems in addition to Django's default system.  
+- zproject/urls.py - List of URLs and the Django views they map to.  
+- zerver/lib/actions.py - Functions for writing to database tables.  
+- zerver/lib/events.py - Functions for fetching server state atomically.  
+- zerver/lib/integrations.py - Registry of all integrations.  
+- zerver/lib/queue.py - Functions for initializing and pushing to Tornado.  
+- zerver/lib/rest.py - Handling for requests to API endpoints.  
+- zerver/models.py - Django models.  
+- zerver/tornado/event_queue.py - Logic for the real-time push system.  
+- zerver/views/\*.py - Django views.  
+- zerver/views/events_register.py - Handling for requests that need to be synced with other clients.  
+- zerver/webhooks/\* - Webhooks for integrations.  
+- zerver/workers/queue_processors.py - Definition for a worker in the RabbitMQ queue.  
+- templates/zerver/\* - Django templates using Jinja2.  
+- Nginx - Front-end web server that handles all HTTP requests.  
+- RabbitMQ - Message broker used to manage a set of queues.  
+- Tornado - Asynchronous web server used in conjunction with Django to handle real-time push.  
+
+### Relations and Properties
+- wsgi - Web Server Gateway Interface.  
+- reverse proxy - Reverse proxy server.  
+- pika - Python library for RabbitMQ.  
+
+## Context Diagram
+
+![Context Diagram](./images/context-diagram.png)
+
+## Behaviour Diagram
+
+![Behaviour Diagram](./images/behaviour-diagram.png)
+
+The above diagram details one of Zulip's most performance-critical paths, from the sending of a message by one user to its receipt by one or more other users. The sender sends a message using Zulip's REST API, and receivers are notified using the real-time events system [23]. The procedure is as follows:
+
+* The sender issues a POST request to the `/messages` endpoint.
+* Zulip validates the request content and determines the clients who need to receive a notification in `check_message`.
+* Zulip enqueues a notification in each of the clients' event queues.
+* Tornado pulls the messages off of the event queues and sends them to their clients:
+  * Mobile clients receive messages via long polling.
+  * Web clients are typically connected via a WebSocket connection, but can also use a long polling approach if WebSockets are not supported.
 
 ## Interfaces
 
@@ -462,7 +513,7 @@ An example of using the method can be seen in the notification processing sectio
 process_message_event(event, cast(Iterable[Mapping[str, Any]], users))
 ```
 
-## Rationale
+## Module Rationale
 
 When looking at the architecture of Zulip as a whole, as well as reading documentation pertaining to the various subsystems it becomes clear that the essential goal behind almost all of Zulip’s architectural decisions is to allow for messages and events to be sent to every relevant user in as close to real time as possible. The other major concern that Zulip has clearly put a lot of thought into addressing with their architecture is one of updating and syncing state between clients.  These two concerns are directly related to the quality attribute of API endpoints responding within 30 milliseconds. As with any chat application Zulip must provide a consistent view of the information that has been sent on a server to all relevant users. In Zulip’s case both of these problems must be considered on the scale of tens of thousands of users, as well as multiple realms (essentially a slack organization) on a single server (quality attribute 2) which has influenced Zulip's architecture.
 
@@ -473,51 +524,6 @@ Another important part of the Zulip architecture which allows it to efficiently 
 These two systems come together in what is the most critical part of the Zulip architecture in terms of real time performance, the Event Queue Server. This is the Tornado server that handles the queue holding all of the events which have yet to be sent to a client.[26] This is an extremely traffic-heavy server, which is why the decision to use a webserver suited to high traffic operations, such as Tornado, as well as a queue management system that allows for such a server to run efficiently, is extremely critical to the performance of Zulip. 
 
 As a chat application the primary concern of Zulip is delivering and syncing data between users in real time fashion. Zulip accomplishes the performance and scalability quality attribute scenarios with smart usage of multiple specialized webservers, and a queueing system that ensures unimportant information can be updated when there is time, while important information can be updated instantly. When used together these modules allow Zulip to scale its real time status to exceed the expectations of its quality attribute scenarios. 
-
-# Module View
-
-## Primary Presentation
-
-![Primary Presentation](./images/primary-presentation.png)
-
-## Element Catalog
-
-### Elements and Properties
-- zproject/backends.py - Configuration for any authentication systems in addition to Django's default system.  
-- zproject/urls.py - List of URLs and the Django views they map to.  
-- zerver/lib/actions.py - Functions for writing to database tables.  
-- zerver/lib/events.py - Functions for fetching server state atomically.  
-- zerver/lib/integrations.py - Registry of all integrations.  
-- zerver/lib/queue.py - Functions for initializing and pushing to Tornado.  
-- zerver/lib/rest.py - Handling for requests to API endpoints.  
-- zerver/models.py - Django models.  
-- zerver/tornado/event_queue.py - Logic for the real-time push system.  
-- zerver/views/\*.py - Django views.  
-- zerver/views/events_register.py - Handling for requests that need to be synced with other clients.  
-- zerver/webhooks/\* - Webhooks for integrations.  
-- zerver/workers/queue_processors.py - Definition for a worker in the RabbitMQ queue.  
-- templates/zerver/\* - Django templates using Jinja2.  
-- Nginx - Front-end web server that handles all HTTP requests.  
-- RabbitMQ - Message broker used to manage a set of queues.  
-- Tornado - Asynchronous web server used in conjunction with Django to handle real-time push.  
-
-### Relations and Properties
-- wsgi - Web Server Gateway Interface.  
-- reverse proxy - Reverse proxy server.  
-- pika - Python library for RabbitMQ.  
-
-## Behaviour Diagram
-
-![Behaviour Diagram](./images/behaviour-diagram.png)
-
-The above diagram details one of Zulip's most performance-critical paths, from the sending of a message by one user to its receipt by one or more other users. The sender sends a message using Zulip's REST API, and receivers are notified using the real-time events system [23]. The procedure is as follows:
-
-* The sender issues a POST request to the `/messages` endpoint.
-* Zulip validates the request content and determines the clients who need to receive a notification in `check_message`.
-* Zulip enqueues a notification in each of the clients' event queues.
-* Tornado pulls the messages off of the event queues and sends them to their clients:
-  * Mobile clients receive messages via long polling.
-  * Web clients are typically connected via a WebSocket connection, but can also use a long polling approach if WebSockets are not supported.
 
 ### References
 
