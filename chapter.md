@@ -192,6 +192,36 @@ Response Measure|Data is received within 30 milliseconds of the request being se
 
 # Module View
 
+## Primary Presentation
+
+![Primary Presentation](./images/primary-presentation.png)
+
+## Element Catalog
+
+### Elements and Properties
+- zproject/backends.py - Configuration for any authentication systems in addition to Django's default system.  
+- zproject/urls.py - List of URLs and the Django views they map to.  
+- zerver/lib/actions.py - Functions for writing to database tables.  
+- zerver/lib/events.py - Functions for fetching server state atomically.  
+- zerver/lib/integrations.py - Registry of all integrations.  
+- zerver/lib/queue.py - Functions for initializing and pushing to Tornado.  
+- zerver/lib/rest.py - Handling for requests to API endpoints.  
+- zerver/models.py - Django models.  
+- zerver/tornado/event_queue.py - Logic for the real-time push system.  
+- zerver/views/\*.py - Django views.  
+- zerver/views/events_register.py - Handling for requests that need to be synced with other clients.  
+- zerver/webhooks/\* - Webhooks for integrations.  
+- zerver/workers/queue_processors.py - Definition for a worker in the RabbitMQ queue.  
+- templates/zerver/\* - Django templates using Jinja2.  
+- Nginx - Front-end web server that handles all HTTP requests.  
+- RabbitMQ - Message broker used to manage a set of queues.  
+- Tornado - Asynchronous web server used in conjunction with Django to handle real-time push.  
+
+### Relations and Properties
+- wsgi - Web Server Gateway Interface.  
+- reverse proxy - Reverse proxy server.  
+- pika - Python library for RabbitMQ.  
+
 ## Behaviour Diagram
 
 ![Behaviour Diagram](./images/behaviour-diagram.png)
