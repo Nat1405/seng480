@@ -16,6 +16,7 @@
       + Relations and Properties
       + Element Behaviour
     * Context Diagram
+    * Behaviour Diagram
     * Rationale
  9. Component and Connector View
     * Primary Presentation
@@ -183,7 +184,6 @@ Response Measure|Data is received within 30 milliseconds of the request being se
     - Bot users should be able to automate user actions.
     - Guest users should not have access to public streams.
     - Realm administrators should be able to do the majority of realm configuration on the web [21].
-
 12. Zulip should support hosting for user-uploaded files.
 13. Zulip should support integration with hundreds of custom webhooks.
 14. Zulip should be deployable as both a cloud service and an on-premise solution.
@@ -222,6 +222,19 @@ Response Measure|Data is received within 30 milliseconds of the request being se
 - reverse proxy - Reverse proxy server.  
 - pika - Python library for RabbitMQ.  
 
+## Behaviour Diagram
+
+![Behaviour Diagram](./images/behaviour-diagram.png)
+
+The above diagram details one of Zulip's most performance-critical paths, from the sending of a message by one user to its receipt by one or more other users. The sender sends a message using Zulip's REST API, and receivers are notified using the real-time events system [23]. The procedure is as follows:
+
+* The sender issues a POST request to the `/messages` endpoint.
+* Zulip validates the request content and determines the clients who need to receive a notification in `check_message`.
+* Zulip enqueues a notification in each of the clients' event queues.
+* Tornado pulls the messages off of the event queues and sends them to their clients:
+  * Mobile clients receive messages via long polling.
+  * Web clients are typically connected via a WebSocket connection, but can also use a long polling approach if WebSockets are not supported.
+
 ### References
 
 1. ACM Code of Ethics and Professional Conduct https://www.acm.org/code-of-ethics   
@@ -246,3 +259,4 @@ Response Measure|Data is received within 30 milliseconds of the request being se
 20. Zulip Code Review Procedurehttps://zulip.readthedocs.io/en/latest/contributing/code-reviewing.html#zulip-server
 21. Zulip Change Guide https://zulip.readthedocs.io/en/latest/production/settings.html#making-changes
 22. Zulip User and Bots Security https://zulip.readthedocs.io/en/latest/production/security-model.html#users-and-bots
+23. Zulip Sending Messages https://zulip.readthedocs.io/en/latest/subsystems/sending-messages.html
