@@ -223,7 +223,7 @@ def do_set_realm_authentication_methods(realm: Realm, authentication_methods: Di
 
 ### Semantics
 
-This resource is used to update the authentification methods that a Zulip Realm uses. Calling this method will update the available options for user authentification on a Zulip Realm with the dictionary of options passed in by the developer. This will changet the `authentification_methods` field of the updated Realm object.
+This resource is used to update the authentification methods that a Zulip Realm uses. Calling this method will update the available options for user authentification on a Zulip Realm with the dictionary of options passed in by the developer. This will change the `authentification_methods` field of the updated Realm object.
 
 ### Error Handling
 
@@ -293,7 +293,7 @@ This resource completely cleans a Zulip server of all user data, messages, and c
 
 ### Data Types
 
-`Real` : A model in the zulip database which corresponds to a Realm hosted on a Zulip server. Contains the data for various properties within the Realm, as well as users in the Realm.
+`Realm` : A model in the zulip database which corresponds to a Realm hosted on a Zulip server. Contains the data for various properties within the Realm, as well as users in the Realm.
 
 `name` : The name of an attribute of a Zulip Realm. String data type.
 
@@ -359,7 +359,7 @@ do_deactivate_realm(example_realm)
 
 ## Interface Identity
 
-### Event Queue Event Sending Interface
+### Event Queue Message Sending Interface
 
 ### Syntax
 
@@ -465,15 +465,15 @@ process_message_event(event, cast(Iterable[Mapping[str, Any]], users))
 
 ## Rationale
 
-When looking at the architecture of Zulip as a whole, as well as reading documentation pertaining to the various subsystems it becomes clear that the essential goal behind almost all of Zulip’s architectural decisions is to allow for messages and events to be sent to every relevant user in as close to real time as possible. The other major concern that Zulip has clearly put a lot of thought into addressing with their architecture is one of updating and syncing state between clients. As with any chat application Zulip must provide a consistent view of the information that has been sent on a server to all relevant users. In Zulip’s case both of these problems must be considered on the scale of tens of thousands of users, which has clearly influenced their architecture.
+When looking at the architecture of Zulip as a whole, as well as reading documentation pertaining to the various subsystems it becomes clear that the essential goal behind almost all of Zulip’s architectural decisions is to allow for messages and events to be sent to every relevant user in as close to real time as possible. The other major concern that Zulip has clearly put a lot of thought into addressing with their architecture is one of updating and syncing state between clients.  These two concerns are directly related to the quality attribute of API endpoints responding within 30 milliseconds. As with any chat application Zulip must provide a consistent view of the information that has been sent on a server to all relevant users. In Zulip’s case both of these problems must be considered on the scale of tens of thousands of users, as well as multiple realms (essentially a slack organization) on a single server (quality attribute 2) which has influenced Zulip's architecture.
 
-The first important step taken in the architecture of Zulip is the separation of normal web server tasks and extremely distributed, long lasting tasks. Zulip uses a Django webserver to host most of the classical parts of Zulip and this solution works well for them. However, for the sending of what Zulip calls “Events”, which are basically any form of update to a user or server, the most common being a standard message, it implements a Tornado based webserver. Tornado is far more suited to hosting long connections with vast numbers of using, running stably even under Zulip’s extremely high user loads. As well, Tornado allows for Zulip to use a long polling system, allowing for quick responses to any user requests to the server. 
+The first important step taken in the architecture of Zulip to enhance the performance and scalability quality attributes is the separation of normal web server tasks and extremely distributed, long lasting connections. Zulip uses a Django webserver to send HTML to Zulip clients and this solution works well for them. For "Events" such as sending a message or other small updates Zulip uses a Tornado webserver.[23] Tornado is far more suited to hosting long connections with vast numbers of using, running stably even under Zulip’s extremely high user loads. As well, Tornado allows for Zulip to use a long polling system, allowing for quick responses to any user requests to the server.[24] 
 
-Another important part of the Zulip architecture which allows it to efficiently process the extremely large amount of requests being sent to the server is the use of RabbitMQ. Behind the scenes, as seen in the primary presentation, almost every part of the Zulip system is sending data to one of a few internal queues. This system of queues allows the Zulip server to handle its processing power efficiently, and is what allows for the real time aspect of the chat to work. The queues are used for asynchronously doing expensive or non time-critical operations, as well as handling extremely important real time operations. This queue based system also allows for better extensibility of Zulip, as every new feature will have its updates processed in the same way, by putting them into the queue and allowing the underlying logic to work.
+Another important part of the Zulip architecture which allows it to efficiently process the extremely large amount of requests being sent to the server is the use of RabbitMQ. Behind the scenes, as seen in the primary presentation, almost every part of the Zulip system is sending data to one of a few internal queues.[25] This system of queues allows the Zulip server to handle its processing power efficiently, and is what allows for the real time aspect of the chat to work. The queues are used for asynchronously doing expensive or non time-critical operations, as well as handling extremely important real time operations. This queue based system also allows for better extensibility of Zulip, as every new feature will have its updates processed in the same way, by putting them into the queue.
  
-These two factors come together in what is the most critical part of the Zulip architecture in terms of real time performance, the Event Queue Server. This is the Tornado server that handles the queue holding all of the events which have yet to be sent to a client. This is an extremely traffic server, which is why the decision to use a webserver suited to high traffic operations, such as Tornado, as well as a queue management system that can allow for such a server to run efficiently, is extremely critical to the performance of Zulip. 
+These two systems come together in what is the most critical part of the Zulip architecture in terms of real time performance, the Event Queue Server. This is the Tornado server that handles the queue holding all of the events which have yet to be sent to a client.[26] This is an extremely traffic-heavy server, which is why the decision to use a webserver suited to high traffic operations, such as Tornado, as well as a queue management system that allows for such a server to run efficiently, is extremely critical to the performance of Zulip. 
 
-As a chat application the primary concern of Zulip is delivering and syncing data between users in real time fashion. Zulip accomplishes this with smart usage of multiple specialized webservers, and a queueing system that ensures unimportant information can be updated when there is time, while important information can be updated instantly. When used together these modules allow Zulip to scale its real time status to even the most extreme number of users in a server. 
+As a chat application the primary concern of Zulip is delivering and syncing data between users in real time fashion. Zulip accomplishes the performance and scalability quality attribute scenarios with smart usage of multiple specialized webservers, and a queueing system that ensures unimportant information can be updated when there is time, while important information can be updated instantly. When used together these modules allow Zulip to scale its real time status to exceed the expectations of its quality attribute scenarios. 
 
 ### References
 
@@ -499,3 +499,7 @@ As a chat application the primary concern of Zulip is delivering and syncing dat
 20. Zulip Code Review Procedurehttps://zulip.readthedocs.io/en/latest/contributing/code-reviewing.html#zulip-server
 21. Zulip Change Guide https://zulip.readthedocs.io/en/latest/production/settings.html#making-changes
 22. Zulip User and Bots Security https://zulip.readthedocs.io/en/latest/production/security-model.html#users-and-bots
+23. Zulip Sending Messages https://zulip.readthedocs.io/en/latest/subsystems/sending-messages.html
+24. Zulip Life of a Request https://zulip.readthedocs.io/en/latest/tutorials/life-of-a-request.html
+25. Zulip Queue System https://zulip.readthedocs.io/en/latest/subsystems/queuing.html
+26. Zulip Event System https://zulip.readthedocs.io/en/latest/subsystems/events-system.html
