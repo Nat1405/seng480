@@ -190,7 +190,278 @@ Response Measure|Data is received within 30 milliseconds of the request being se
 15. Zulip should support GDPR Compliance.
 16. Zulip should support searching through message history [22].
 
-### References
+## Interfaces
+
+## Interface Identity
+
+### Realm Management Interface
+
+### Syntax
+
+Syntax to update the properties of a Realm
+
+```python
+def do_set_realm_property(realm: Realm, name: str, value: Any) -> None:
+```
+
+### Semantics
+
+This resource allows for any attribute on a realm to be updated with one method.
+When called the method will update whichever attribute of the real the developer intends, with whatever value was passed in via the method signature. In order to call this event the Realm name must be known, as well as both the attribute to be updated, and the value of the newly updated attribute.
+
+### Error Handling
+
+Error handling in this method is done with an assertion that the value being passed in is actually an instance of the existing data type that is being updated.
+
+### Syntax 
+
+Syntax to update the authentification methods for a Realm
+
+```python
+def do_set_realm_authentication_methods(realm: Realm, authentication_methods: Dict[str, bool]) -> None:
+```
+
+### Semantics
+
+This resource is used to update the authentification methods that a Zulip Realm uses. Calling this method will update the available options for user authentification on a Zulip Realm with the dictionary of options passed in by the developer. This will changet the `authentification_methods` field of the updated Realm object.
+
+### Error Handling
+
+No explicit error handling. See Error Handling section for Interface error handling overview.  
+
+### Syntax 
+
+Syntax to edit message editing properties on a Realm
+
+```python
+def do_set_realm_message_editing(realm: Realm,allow_message_editing: bool,
+                                 message_content_edit_limit_seconds: int,
+                                 allow_community_topic_editing: bool) -> None:
+```
+
+### Semantics
+
+This resource will update the values of the Zulip realm pertaining to the the ability of users in the server to edit messages. There are three different values which must be passed in here, each corresponding to a different message editing property of the realm in question. A successfull call of this method will result in the `allow_message_editing`, `message_content_edit_limit_seconds`, and `allow_community_topic_editing` fields of the Realm object to be updated.
+
+### Error Handling
+
+No explicit error handling. See Error Handling section for Interface error handling overview.  
+
+### Syntax
+
+This resource will Deactivate a Zulip Realm
+
+```python
+def do_deactivate_realm(realm: Realm, acting_user: Optional[UserProfile]=None) -> None:
+```
+
+### Semantics
+
+This resource will delete a Zulip Realm while preserving its users. The data for the deactivated Realm will be kept, but its activation status will be set to deactivated. 
+
+### Error Handling
+
+No explicit error handling. See Error Handling section for Interface error handling overview.  
+
+### Syntax
+
+This resource will reactivated a deactivated Realm.
+
+```python
+def do_reactivate_realm(realm: Realm) -> None:`
+```
+### Symantics
+
+This resource will reactivate a Zulip Realm which has previously been deactivated. 
+
+### Error Handling
+
+No explicit error handling. See Error Handling section for Interface error handling overview.  
+
+### Syntax 
+
+This resource will clean a Zulip Realm of all data.
+
+```python
+def do_scrub_realm(realm: Realm) -> None:
+```
+
+### Semantics
+
+This resource completely cleans a Zulip server of all user data, messages, and custom Realm data. After the method has been called there is no going back, so caution must be used when considering using this resource. While this resource scrubs the Realm, it does not deactivated, and a functional Zulip Realm will be left after calling this method.
+
+
+### Data Types
+
+`Real` : A model in the zulip database which corresponds to a Realm hosted on a Zulip server. Contains the data for various properties within the Realm, as well as users in the Realm.
+
+`name` : The name of an attribute of a Zulip Realm. String data type.
+
+`value` : The value that will be placed into the attributed named by the `name` argument. Could be one of many data types.
+
+`authentification_methods` : A dictionary containing the names of various possible authentification methods as keys, and a bool representing whether they are allowed on the Realm as values.
+
+`allow_message_editing` : A bool indication whether messages are allowed to be edited on the Realm.
+
+`message_content_edit_limit_seconds` : An int representing the amount of seconds that may pass before a message is not allowed to be edited.
+
+`allow_community_topic_editing` : A bool that represents whether regular users are allowed to edit the Realm Topic.
+
+
+### Error Handling
+
+There is little explicit error handling in this Interface, which is true for the Zulip codebase as a whole. Rather, most of the error handling is handled by some sanity checks that ensure there are not bad values being passed to resources, as well as the implicit error handling with the use of the Python Typing module.
+
+For potentially application breaking code there are checks in place, such as this one seen in the `do_set_realm_proerty` method :
+
+```python
+assert isinstance(value, property_type), (
+        'Cannot update %s: %s is not an instance of %s' % (
+            name, value, property_type,))
+```
+
+Which will prevent values which will flat out not work with the system from being passed in.
+
+However outside of a few instances most of the error handling in this interface is handled with expected values in the signatures of the methods.
+
+For Example:
+
+```python
+def do_set_realm_authentication_methods(realm: Realm,
+                                        authentication_methods: Dict[str, bool]) -> None:
+```
+
+Uses type hinting to explicitly state the expected types of the arguments to the method. `realm` should be a Realm object, and `authentification_methods` should be a dictionary of strings and bools. By using these typing hints Zulip can later use a type checker, (mypy in Zulip's case), to ensure that all arguments are of the correct type and prevent bugs.
+
+### Variability
+
+There is essentially no variability in this interface. The options for properties in a realm are clearly defined by the Realm model in the database made by the Django server. As such, while these attributes can be modified, there is little way to change the interface for modifying them. 
+
+### Quality Attributes
+
+This interface pertains to the Modifiability and Security quality attributes. With this interface it is easy for a Zulip developer to add in new front end methods for editing the properties of a Zulip Realm as a moderator or server owner, without having to modify any of the underlying code directly. This would greatly increase the ease of both developing new zulip features related to realms,and even making entirely new Zulip clients.
+
+Security is also a major concern adressed by this Interface. The ability to set the authentification methods used by a server is an important feature for security, especially at an enterprise level. As well the ability to easily scrub a server clean of data is particularly useful.
+
+### Rationale
+
+The Rationale behind this interface is an easily used way to change the various settings related to a Zulip realm. In an application with as many different clients as Zulip it is especially important to have one central area where things can be updated. This makes the development of new clients and features far easier than if this interface did not exist and these properties needed to be set at a lower level. As a part of the lib module of the Zulip server code these resources can be easily accessed by any part of the Zulip codebase. 
+
+### Usage Guide
+
+A developer will generally access this interface when implementing or working on a feature related to Realms. The specific Realm must always be on hand in order to edit any of the properties of a Realm. Other than a specific Realm there is no real essential data which a developer must have on hand before accessing these methods. 
+
+The methods are all easily accessed, for example to deactivate a realm a developer can use the command
+
+```python
+do_deactivate_realm(example_realm)
+```
+
+## Interface Identity
+
+### Event Queue Event Sending Interface
+
+### Syntax
+
+Syntax to fetch a users events from the Tornado server:
+
+```python
+get_user_events(user_profile: UserProfile, queue_id: str, last_event_id: int)
+```
+
+This resource is used to fetch the events thats a user 
+
+Syntax to find out which users a message should be sent to
+
+```python
+get_client_info_for_message_event(event_template: Mapping[str, Any], users: Iterable[Mapping[str, Any]])
+```
+
+### Semantics
+
+This resource is used to find out which users a message in the event queue should be sent to. If successfully called the method will return a Dictionary containing the relevant information needed to send the message to interested users. The logical conditions for calling this event are that a message has been typed and attempted to be sent. 
+
+### Error Handling
+
+In the event that no relevant users can be found, or the sender is not a valid user in the server an empty dictionary will be returned. These conditions are explicitly checked in the code. 
+
+### Syntax 
+
+Syntax to send a message event
+
+```python
+def process_message_event(event_template: Mapping[str, Any], users: Iterable[Mapping[str, Any]])
+```
+
+### Semantics
+
+This is the method which will actually process the message event and send it to the proper users. When called the method will examine the inputted Message Event and attempt to send and notify the proper users. After this method has been successfully run a new Event will be added to the event queue of every user who recieved the Message which contains the Message in question.
+
+### Error Handling
+
+### Data Types
+
+`Client` : A model in the zulip database used to determine which client a particular user is accessing Zulip from.
+
+`event_template` : A Mapping containing names of attributes of the event being processed mapped to the value of those attributes.
+
+`users` : An iterable mapping of user attribute names mapped to the value of those attributes.
+
+### Error Handling
+
+The error handling in this interface is generally handled via sanity checks which will establish whether or not the usage of the method will result in problems, and if so not return problematic data. 
+
+Examples of this type of error handling can be seen in a few places, such as here in the get_client_info_for_message_event method
+
+```python
+ def is_sender_client(client: ClientDescriptor) -> bool:
+    return (sender_queue_id is not None) and client.event_queue.id == sender_queue_id
+```
+Which will ensure that the sender id actually exists, and is the same as the one in the senders client.
+
+Another example is in the `process_message_event` method.
+
+```python
+if not client.accepts_event(user_event):
+    continue
+```
+Which will prevent users who don't want to recieve the message from being added to the list.
+
+There is some more implicit error handling in the method signatures of the two resources in this interface. Both make use of the Python typing module, which allows them to expect certain types of variables to be passed in as arguments. For example 
+
+```python
+def process_message_event(event_template: Mapping[str, Any], users: Iterable[Mapping[str, Any]])
+```
+
+Expects an event template which is a Mapping type, and an Iterable Mapping type for users.
+
+Overall, there is very little explicit error handling in this interface, or the Zulip codebase as a whole. The error checking is done by preventing incorrect data from being processed by explicitly stating which data types should be handled by a method, and then ensuring that no faulty data is processed with sanity checks.
+
+### Variability
+
+There is little variability in this interface. Due to the fact that the end result of using this interface is simply loading a Message Event into the queues of relevant users, and the fact that these queues are handled elsewhere, there are no real changes required when the system is under load or down.
+
+### Quality Attributes
+
+This interface mainly demonstrates the Modifiability Quality Attribute Scenario. this interface allows developers to send messages to users without having to access any of the actual queue system, and therefore allows for messages to be sent without having to worry about event priority. This means that new types of messages or events on a server which sned messages containing updates or other important information can be implemented by accessing one central interface. 
+
+### Rationale
+
+The interface seems to be designed this way to allow for all messages on the server to be handled the same way. Due to the nature of Zulips Event Server and queue based priority event handling system adding new features which deal with messages in any way would be a nightmare without an easily designed way to handle messaging. The design of this interface allows for Zulip developers to implement messages without ever having to access the details of the queue system, which could potentially affect every other part of the Zulip server system. 
+
+### Usage Guide
+
+When a developer needs to send a message to users they will generally implement some feature in the main Django webserver code which handles all of the normal, non event based, activities of the Zulip application. The Event Queue Messaging Interface is only ever meant to be called from the Django codebase, and as such should never be used by a developer working on the Tornado server codebase. The general way that a developer would access the server would be through the process_message_event resource. This resource would be accessed by some action on the server triggering a Message Event. The developer will need to provide both an `event_template` variable, and a `users` variable. 
+
+`event_template` will generally be a dictionary which will contain the information needed about the message to be sent. This event should be a message.
+
+`users` will be a dictionary of users that the message is attempting to be sent to. 
+
+An example of using the method can be seen in the notification processing section 
+
+```python
+process_message_event(event, cast(Iterable[Mapping[str, Any]], users))
+```
 
 ## Rationale
 
@@ -204,6 +475,7 @@ These two factors come together in what is the most critical part of the Zulip a
 
 As a chat application the primary concern of Zulip is delivering and syncing data between users in real time fashion. Zulip accomplishes this with smart usage of multiple specialized webservers, and a queueing system that ensures unimportant information can be updated when there is time, while important information can be updated instantly. When used together these modules allow Zulip to scale its real time status to even the most extreme number of users in a server. 
 
+### References
 
 1. ACM Code of Ethics and Professional Conduct https://www.acm.org/code-of-ethics   
 2. Zulip Privacy Policy https://zulipchat.com/privacy/  
