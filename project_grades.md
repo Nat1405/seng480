@@ -62,7 +62,7 @@ Scenarios:
 
 -----
 
-# Milestone 3 [ / 20]
+# Milestone 3 [20 / 20]
 
 ## Marking Guide
 - all required sections are present and well-organized. Include a table of contents. (2)
@@ -79,6 +79,19 @@ Potential deductions:
 
 ## Notes M3
 (explaining why marks were deducted)
+
+### Primary View
+
+- The font in the image is too small, making it hard to read.
+
+### Element Catalog
+
+- Some of your catalog entries are too generic and do not give the reader enough information about the architecture, e.g., Django Views, Django Models, ...etc. What models and views exist? (-1)
+
+
+### Interfaces (+2)
+
+- Very well done!
 
 -----
 
