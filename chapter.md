@@ -536,11 +536,6 @@ As a chat application the primary concern of Zulip is delivering and syncing dat
 
 ### Elements and Properties
 
-* **Django Service:** Python WSGI server for serving Zulip's REST endpoints.
-* **Tornado Service:** Web server for handling Zulip's real-time push system.
-* **Event Queue**: Message queuing process - default implementation is RabbitMQ.
-* **Zulip Clients:** Desktop, web or mobile applications trying to send and retrive data from the Zulip server.
-
 ### Relations and Properties
 
 ### Element Behaviour
@@ -591,4 +586,4 @@ This diagram shows how Zulip allows an administrator to scale their production s
 25. Zulip Queue System https://zulip.readthedocs.io/en/latest/subsystems/queuing.html
 26. Zulip Event System https://zulip.readthedocs.io/en/latest/subsystems/events-system.html
 27. Zulip System Scalability https://github.com/zulip/zulip/issues/54
-28. Zulip Configuration https://github.com/zulip/zulip/blob/cfa62700809584003468a982605ef724204a5f21/puppet/zulip/manifests/app_frontend_base.pp
+28. Zulip Configuration https://github.com/zulip/zulip/blob/cfa62700809584003468a982605ef724204a5f21/puppet/zulip/manifests/app_frontend_base.pp#L70
