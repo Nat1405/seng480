@@ -551,7 +551,7 @@ This diagram shows how Zulip allows an administrator to scale their production s
 1. System administrator sets the configuration to multiprocess in app_frontend_base.pp and restarts the Zulip production server.
 2. Supervisor reads the configuration from zulip.conf.template.erb and creates a separate process for each worker.
 3. Each worker is initialized from the appropriate subclass of QueueProcessingWorker based on its functionality, e.g. outgoing webhook, error report, or email sender.
-4. The QueueProcessingWorker can consume messages from RabbitMQ queues through the SimpleQueueClient interface.
+4. After establishing a connection, the worker can consume messages from RabbitMQ queues through the SimpleQueueClient interface.
 
 ## Variability Guide
 
