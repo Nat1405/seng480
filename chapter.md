@@ -557,7 +557,7 @@ This diagram shows how Zulip allows an administrator to scale their production s
 
 **Alternative Databases**
 
-Out of the box, Zulip uses a default PostgreSQL configuration, but it is possible to swap in any remote database-as-a-service as long as it supports [full-text search](https://zulip.readthedocs.io/en/latest/production/deployment.html#using-zulip-with-amazon-rds-as-the-database). This can be configured in /etc/zulip/settings.py.
+Out of the box, Zulip uses a default PostgreSQL configuration, but it is possible to swap in any remote database-as-a-service as long as it supports full-text search [29]. This can be configured in /etc/zulip/settings.py.
 
 **HTTP Requests**
 
@@ -566,7 +566,6 @@ An administrator can configure the web server to use HTTP instead of HTTPS when 
 **Multiple Tornado Instances**
 
 Zulip can be configured to run more than one Tornado server and shard event traffic by realm. This can be configured in puppet/zulip/manifests/app_frontend_base.pp.
-
 
 ## Rationale 
 
@@ -600,3 +599,4 @@ Zulip can be configured to run more than one Tornado server and shard event traf
 26. Zulip Event System https://zulip.readthedocs.io/en/latest/subsystems/events-system.html
 27. Zulip System Scalability https://github.com/zulip/zulip/issues/54
 28. Zulip Configuration https://github.com/zulip/zulip/blob/cfa62700809584003468a982605ef724204a5f21/puppet/zulip/manifests/app_frontend_base.pp#L70
+29. Zulip Custom Database https://zulip.readthedocs.io/en/latest/production/deployment.html#using-zulip-with-amazon-rds-as-the-database
