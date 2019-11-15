@@ -525,6 +525,27 @@ These two systems come together in what is the most critical part of the Zulip a
 
 As a chat application the primary concern of Zulip is delivering and syncing data between users in real time fashion. Zulip accomplishes the performance and scalability quality attribute scenarios with smart usage of multiple specialized webservers, and a queueing system that ensures unimportant information can be updated when there is time, while important information can be updated instantly. When used together these modules allow Zulip to scale its real time status to exceed the expectations of its quality attribute scenarios. 
 
+#Component and Connector View
+
+## Primary Presentation
+
+## Element Catalog
+
+### Elements and Properties
+
+### Relations and Properties
+
+### Element Behaviour
+
+## Context Diagram
+
+![C and C Context Diagram](./images/c_and_c_context_diagram.png)
+
+## Variability Guide
+
+## Rationale 
+
+
 ### References
 
 1. ACM Code of Ethics and Professional Conduct https://www.acm.org/code-of-ethics   
