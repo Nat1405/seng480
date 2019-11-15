@@ -25,6 +25,7 @@
       + Relations and Properties
       + Element Behaviour
     * Context Diagram
+    * Behaviour Diagram
     * Variability Guide
     * Rationale
  10. Code Quality and Technical Debt
@@ -525,9 +526,11 @@ These two systems come together in what is the most critical part of the Zulip a
 
 As a chat application the primary concern of Zulip is delivering and syncing data between users in real time fashion. Zulip accomplishes the performance and scalability quality attribute scenarios with smart usage of multiple specialized webservers, and a queueing system that ensures unimportant information can be updated when there is time, while important information can be updated instantly. When used together these modules allow Zulip to scale its real time status to exceed the expectations of its quality attribute scenarios. 
 
-#Component and Connector View
+# Component and Connector View
 
 ## Primary Presentation
+
+![Primary Presentation](images/primary-presentation-componentconnector.png)
 
 ## Element Catalog
 
@@ -541,10 +544,32 @@ As a chat application the primary concern of Zulip is delivering and syncing dat
 
 ![C and C Context Diagram](./images/c_and_c_context_diagram.png)
 
+## Behaviour Diagram
+
+![Behaviour Diagram](./images/behaviour-componentconnector.png)
+
+This diagram shows how Zulip allows an administrator to scale their production server through the configuration of queue processors. The main Zulip process can outsource the handling of expensive operations to these background workers. Using a single server with a multithreaded configuration, Zulip can handle roughly 1000 concurrent users [27]. The same server can scale to 10,000 users through running multiprocess queue processors at the expense of more RAM [28]. 
+
+1. System administrator sets the configuration to multiprocess in app_frontend_base.pp and restarts the Zulip production server.
+2. Supervisor reads the configuration from zulip.conf.template.erb and creates a separate process for each worker.
+3. Each worker is initialized from the appropriate subclass of QueueProcessingWorker based on its functionality, e.g. outgoing webhook, error report, or email sender.
+4. After establishing a connection, the worker can consume messages from RabbitMQ queues through the SimpleQueueClient interface.
+
 ## Variability Guide
 
-## Rationale 
+**Alternative Databases**
 
+Out of the box, Zulip uses a default PostgreSQL configuration, but it is possible to swap in any remote database-as-a-service as long as it supports full-text search [29]. This can be configured in /etc/zulip/settings.py.
+
+**HTTP Requests**
+
+An administrator can configure the web server to use HTTP instead of HTTPS when communicating with the Zulip server. This can be configured in /etc/zulip/zulip.conf.
+
+**Multiple Tornado Instances**
+
+Zulip can be configured to run more than one Tornado server and shard event traffic by realm. This can be configured in puppet/zulip/manifests/app_frontend_base.pp.
+
+## Rationale 
 
 ### References
 
@@ -574,3 +599,6 @@ As a chat application the primary concern of Zulip is delivering and syncing dat
 24. Zulip Life of a Request https://zulip.readthedocs.io/en/latest/tutorials/life-of-a-request.html
 25. Zulip Queue System https://zulip.readthedocs.io/en/latest/subsystems/queuing.html
 26. Zulip Event System https://zulip.readthedocs.io/en/latest/subsystems/events-system.html
+27. Zulip System Scalability https://github.com/zulip/zulip/issues/54
+28. Zulip Configuration https://github.com/zulip/zulip/blob/cfa62700809584003468a982605ef724204a5f21/puppet/zulip/manifests/app_frontend_base.pp#L70
+29. Zulip Custom Database https://zulip.readthedocs.io/en/latest/production/deployment.html#using-zulip-with-amazon-rds-as-the-database
