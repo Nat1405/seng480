@@ -18,7 +18,7 @@
     * [Behaviour Diagram](#Behaviour-Diagram)
     * [Interfaces](#Interfaces)
     * [Module Rationale](#Module-Rationale)
- 9. Component and Connector View
+ 9. [Component and Connector View](#Component-and-Connector-View)
     * Primary Presentation
     * Element Catalog
       + Elements and Properties
@@ -26,7 +26,7 @@
       + Element Behaviour
     * Context Diagram
     * Behaviour Diagram
-    * Variability Guide
+    * [Variability Guide](#Variability-Guide)
     * Rationale
  10. Code Quality and Technical Debt
  11. Conclusion
