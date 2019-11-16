@@ -27,7 +27,8 @@
     * Context Diagram
     * Behaviour Diagram
     * [Variability Guide](#Variability-Guide)
-    * Rationale
+    * [Component and Connector Interfaces](#Component-and-Connector-Interfaces)
+    * [Component and Connector Rationale](#Component-and-Connector-Rationale)
  10. Code Quality and Technical Debt
  11. Conclusion
 
@@ -494,7 +495,7 @@ There is little variability in this interface. Due to the fact that the end resu
 
 ### Quality Attributes
 
-This interface mainly demonstrates the Modifiability Quality Attribute Scenario. this interface allows developers to send messages to users without having to access any of the actual queue system, and therefore allows for messages to be sent without having to worry about event priority. This means that new types of messages or events on a server which sned messages containing updates or other important information can be implemented by accessing one central interface. 
+This interface mainly demonstrates the Modifiability Quality Attribute. this interface allows developers to send messages to users without having to access any of the actual queue system, and therefore allows for messages to be sent without having to worry about event priority. This means that new types of messages or events on a server which sned messages containing updates or other important information can be implemented by accessing one central interface. 
 
 ### Rationale
 
@@ -502,7 +503,7 @@ The interface seems to be designed this way to allow for all messages on the ser
 
 ### Usage Guide
 
-When a developer needs to send a message to users they will generally implement some feature in the main Django webserver code which handles all of the normal, non event based, activities of the Zulip application. The Event Queue Messaging Interface is only ever meant to be called from the Django codebase, and as such should never be used by a developer working on the Tornado server codebase. The general way that a developer would access the server would be through the process_message_event resource. This resource would be accessed by some action on the server triggering a Message Event. The developer will need to provide both an `event_template` variable, and a `users` variable. 
+When a developer needs to send a message to users they will generally implement some feature in the main Django web server code which handles all of the normal, non event based, activities of the Zulip application. The Event Queue Messaging Interface is only ever meant to be called from the Django codebase, and as such should never be used by a developer working on the Tornado server codebase. The general way that a developer would access the server would be through the process_message_event resource. This resource would be accessed by some action on the server triggering a Message Event. The developer will need to provide both an `event_template` variable, and a `users` variable. 
 
 `event_template` will generally be a dictionary which will contain the information needed about the message to be sent. This event should be a message.
 
@@ -518,13 +519,13 @@ process_message_event(event, cast(Iterable[Mapping[str, Any]], users))
 
 When looking at the architecture of Zulip as a whole, as well as reading documentation pertaining to the various subsystems it becomes clear that the essential goal behind almost all of Zulip’s architectural decisions is to allow for messages and events to be sent to every relevant user in as close to real time as possible. The other major concern that Zulip has clearly put a lot of thought into addressing with their architecture is one of updating and syncing state between clients.  These two concerns are directly related to the quality attribute of API endpoints responding within 30 milliseconds. As with any chat application Zulip must provide a consistent view of the information that has been sent on a server to all relevant users. In Zulip’s case both of these problems must be considered on the scale of tens of thousands of users, as well as multiple realms (essentially a slack organization) on a single server (quality attribute 2) which has influenced Zulip's architecture.
 
-The first important step taken in the architecture of Zulip to enhance the performance and scalability quality attributes is the separation of normal web server tasks and extremely distributed, long lasting connections. Zulip uses a Django webserver to send HTML to Zulip clients and this solution works well for them. For "Events" such as sending a message or other small updates Zulip uses a Tornado webserver.[23] Tornado is far more suited to hosting long connections with vast numbers of using, running stably even under Zulip’s extremely high user loads. As well, Tornado allows for Zulip to use a long polling system, allowing for quick responses to any user requests to the server.[24] 
+The first important step taken in the architecture of Zulip to enhance the performance and scalability quality attributes is the separation of normal web server tasks and extremely distributed, long lasting connections. Zulip uses a Django web server to send HTML to Zulip clients and this solution works well for them. For "Events" such as sending a message or other small updates Zulip uses a Tornado web server.[23] Tornado is far more suited to hosting long connections with vast numbers of using, running stably even under Zulip’s extremely high user loads. As well, Tornado allows for Zulip to use a long polling system, allowing for quick responses to any user requests to the server.[24] 
 
 Another important part of the Zulip architecture which allows it to efficiently process the extremely large amount of requests being sent to the server is the use of RabbitMQ. Behind the scenes, as seen in the primary presentation, almost every part of the Zulip system is sending data to one of a few internal queues.[25] This system of queues allows the Zulip server to handle its processing power efficiently, and is what allows for the real time aspect of the chat to work. The queues are used for asynchronously doing expensive or non time-critical operations, as well as handling extremely important real time operations. This queue based system also allows for better extensibility of Zulip, as every new feature will have its updates processed in the same way, by putting them into the queue.
  
-These two systems come together in what is the most critical part of the Zulip architecture in terms of real time performance, the Event Queue Server. This is the Tornado server that handles the queue holding all of the events which have yet to be sent to a client.[26] This is an extremely traffic-heavy server, which is why the decision to use a webserver suited to high traffic operations, such as Tornado, as well as a queue management system that allows for such a server to run efficiently, is extremely critical to the performance of Zulip. 
+These two systems come together in what is the most critical part of the Zulip architecture in terms of real time performance, the Event Queue Server. This is the Tornado server that handles the queue holding all of the events which have yet to be sent to a client.[26] This is an extremely traffic-heavy server, which is why the decision to use a web server suited to high traffic operations, such as Tornado, as well as a queue management system that allows for such a server to run efficiently, is extremely critical to the performance of Zulip. 
 
-As a chat application the primary concern of Zulip is delivering and syncing data between users in real time fashion. Zulip accomplishes the performance and scalability quality attribute scenarios with smart usage of multiple specialized webservers, and a queueing system that ensures unimportant information can be updated when there is time, while important information can be updated instantly. When used together these modules allow Zulip to scale its real time status to exceed the expectations of its quality attribute scenarios. 
+As a chat application the primary concern of Zulip is delivering and syncing data between users in real time fashion. Zulip accomplishes the performance and scalability quality attribute scenarios with smart usage of multiple specialized web servers, and a queueing system that ensures unimportant information can be updated when there is time, while important information can be updated instantly. When used together these modules allow Zulip to scale its real time status to exceed the expectations of its quality attribute scenarios. 
 
 # Component and Connector View
 
@@ -569,7 +570,316 @@ An administrator can configure the web server to use HTTP instead of HTTPS when 
 
 Zulip can be configured to run more than one Tornado server and shard event traffic by realm. This can be configured in puppet/zulip/manifests/app_frontend_base.pp.
 
-## Rationale 
+## Component and Connector Interfaces
+
+## Interface Identity
+
+### SimpleQueueClient Interface
+
+### Syntax 
+
+Syntax to publish a new string message to the queue.
+
+```python
+def publish(self, queue_name: str, body: str) -> None:
+```
+
+### Semantics
+
+This method is used to publish a message to the RabbitMQ queue. If called successfully a new string will be added to the queue of messages, and the action will be recorded on a statistics tracker. 
+
+### Error Handling
+
+While there is no explicit error handling in this method, there are type hints to attempt to guide developers into using the right parameters. These type hints can be enforced used a static type checker to ensure no hard errors.
+
+### Syntax 
+
+Syntax to publish a new JSON event to the queue.
+
+```python
+def json_publish(self, queue_name: str, body: Union[Mapping[str, Any], str]) -> None:
+```
+
+### Semantics
+
+This method is used to publish new JSON data to the RabbitMQ queue. This is the method which is used to publish events to the queue, as most events use JSON by default. Upon successfully calling this method a new JSON event will be placed in the queue and nothing will be returned. 
+
+### Error Handling 
+
+While there is no explicit error handling in this method, there are type hints to attempt to guide developers into using the right parameters. These type hints can be enforced used a static type checker to ensure no hard errors.
+
+### Syntax
+
+Syntax to add a new consumer to the queue.
+
+```python
+def register_consumer(self, queue_name: str, consumer: Consumer) -> None:
+```
+
+### Symantics
+
+This method will register a new consumer on the specified queue. Consumers can be notified of and sent messages and events from the queue to handle. Upon successfully calling this method a new consumer will be added to the specified queue and channel and nothing will be returned.
+
+### Error handling
+
+As with other methods in this interface, and the Zulip codebase as a whole, this method has very little explicit error handling. There are type hints guiding developers towards the expected parameter input type and return type which can be statically checked. As well this method will attempt to send a basic acknowledgement method to test whether the consumer has been correctly registered. If this fails an exception will be raised.
+
+### Syntax
+
+Syntax to drain all messages from a queue
+
+```python
+def drain_queue(self, queue_name: str, json: bool=False) -> List[Dict[str, Any]]:
+```
+
+### Semantics
+
+This message is used to return all of the messages in a given queue. Upon successfully calling this method a dictionary of every Message Event in the queue will be returned, JSON or not, and the queue will be emptied of messages.
+
+### Error Handling
+
+While there is no explicit error handling in this method, there are type hints to attempt to guide developers into using the right parameters. These type hints can be enforced used a static type checker to ensure no hard errors.
+
+### Syntax
+
+Syntax for closing a connection opened by a SimpleQueueClient
+
+```python
+def close(self) -> None:
+```
+
+### Semantics
+
+This is a simple method which will check for a connection to some channel, and close it if it exists. It is used when exiting the program or ending a connection.
+
+### Error Handling
+
+There is almost no error handling in this method as it is so simple. There is only a simple type hint showing that there is no expected return for this method.
+
+### Syntax 
+
+Method for ensuring that a Queue exists, and starting the callback process.
+
+```python
+def ensure_queue(self, queue_name: str, callback: Callable[[], None]) -> None:
+```
+
+### Semantics
+
+This method is used to ensure that a given queue has been declared. Upon calling, if the queue has already been declared then an empty callback will be called, if the queue has not already been declared then it will be declared, and then an empty callback will be called.
+
+### Error Handling 
+
+While there is no explicit error handling in this method, there are type hints to attempt to guide developers into using the right parameters. These type hints can be enforced used a static type checker to ensure no hard errors.
+
+### Data types
+
+`queue_name` : The name of a queue that exists on the Zulip server. String.
+
+`Callable` : A callback method used for communication between a queue and the SimpleQueueClient.
+
+### Error Handling
+
+As with the majority of the rest of the Zulip codebase, the error handling in this interface is mostly handled with sanity checks ensuring that the correct data is present, and the correct parameters and return types are being utilized and expected.
+
+An example of these sorts of checks is the usage of the ensure_queue method in every method which passes a callback to a queue.
+```python
+def ensure_queue(self, queue_name: str, callback: Callable[[], None]) -> None:
+``` 
+This ensures that every time a queue is being utilized in some way by a method it is being checked to ensure that it actually exists before passing a callback to it.
+
+This can be seen in the last line of the publish method
+
+```python
+self.ensure_queue(queue_name, do_publish)
+```
+
+In most places the error handling in this interface is handled with good usage of type hints on the header of every method. For example the header of the publish_json method.
+
+```python
+def json_publish(self, queue_name: str, body: Union[Mapping[str, Any], str]) -> None:
+```
+
+This type hints ensure that developers know what types are expected in both the parameters to a function, and the returned value from the function. These type hints can later be checked using a static checking, (Zulip uses mypy) to not allow code not adhering to these hints to be sent into production.
+
+### Variability
+
+This interface has little variability, as SimpleQueueClient, which encapsulates this interface is little more than a wrapper around the RabbitMQ pika queue management client. If a zulip server were to implement a queue management system other than RabbitMQ then a drastically different interface would be needed.
+
+### Quality Attributes
+
+The primary quality attributes that this interface addresses are modifiability and performance. As the developers state in a comment at the beginning of the SimpleQueueClient class "This simple queuing library doesn't expose much of the power ofrabbitmq/pika's queuing system; its purpose is to just provide an interface for external files to put things into queues and take them out from bots without having to import pika code all over our codebase"[30]. This allows for new parts of the codebase to access the queue system without having to rewrite a queue management client. 
+
+As well, easy access to a powerful queue system is what allows for the Zulip codebase to be highly performant. Having one ready to use queue client means that this performance can be easily extended to the entire Zulip codebase.
+
+## Rationale
+
+As explained in the above comment the main purpose for this interface is to allow files anywhere in the Zulip codebase to access the queues without having to import and write queue specific code all over the Zulip codebase. This allows the developers to keep different modules tightly focused and prevents tight coupling where adding to the code in any way would be a difficult task.
+
+## Usage Guide
+
+This interface will be used anywhere a developer needs to publish events to a queue or consume messages from a queue. In order to use the Interface a developer will need to Instantiate the SimpleQueueClient class from the queue.py file in the lib directory of the Zerver codebase. The developer can then use the methods of the interface to publish to a queue or consume messages from a queue. In order to do this the developer must know the name of the queue that they wish to access,generally passed in as the `queue_name` string variable.
+
+An example of the usage of this interface can be seen in the purge_queue.py helper file in the Zerver management directory
+
+```python
+ def purge_queue(queue_name: str) -> None:
+            queue = SimpleQueueClient()
+            queue.ensure_queue(queue_name, lambda: None)
+            queue.channel.queue_purge(queue_name)
+```
+
+## Interface Identity
+
+### Event Utilities Interface
+
+### Syntax
+
+Syntax for fetching initial event state.
+
+```python 
+def fetch_initial_state_data(user_profile: UserProfile,
+                             event_types: Optional[Iterable[str]],
+                             queue_id: str, client_gravatar: bool,
+                             include_subscribers: bool = True) -> Dict[str, Any]:
+```
+
+### Semantics
+
+This method is used to fetch the intial data upon startup or connection to a server. This method will return all of the events that a client is allows to receive, and has opted in for. Upon successful completion of this method a client will have updated Django state data for the server. If the type of events that a user wants is not specified they will be updated on all events. 
+
+### Error Handling
+
+While there is no explicit error handling in this method, there are type hints to attempt to guide developers into using the right parameters. These type hints can be enforced used a static type checker to ensure no hard errors.
+
+### Syntax 
+
+Syntax to apply new events to clients
+
+```python
+def apply_event(state: Dict[str, Any],
+                event: Dict[str, Any],
+                user_profile: UserProfile,
+                client_gravatar: bool,
+                include_subscribers: bool) -> None:
+```
+
+### Semantics
+
+This method is used to apply new events to clients. It is very similar to the above `fetch_initial_state_data` method, however it is used to apply only one event at a time. Upon successful completion of this method a client will be updated with whatever event was passed in as a parameter. The state of the Django code corresponding to the specified user will then be updated.
+
+### Error Handling 
+
+While there is no explicit error handling in this method, there are type hints to attempt to guide developers into using the right parameters. These type hints can be enforced used a static type checker to ensure no hard errors.
+
+### Syntax
+
+Syntax for applying multiple events to a client.
+
+```python
+def apply_events(state: Dict[str, Any], events: Iterable[Dict[str, Any]],
+                 user_profile: UserProfile, client_gravatar: bool,
+                 include_subscribers: bool = True,
+                 fetch_event_types: Optional[Iterable[str]] = None) -> None:
+```
+
+### Semantics
+
+This method is simply a utility that allows for a developer to apply multiple events to a client at one time. It simply calls the above `apply_event` method multiple times, once for each event in the Dict that the developer passes in to the method. Upon successful completion of this method every event in the dictionary will be applied to the specified client. The state of the Django code corresponding to the specified user will then be updated.
+
+### Error Handling
+
+While there is no explicit error handling in this method, there are type hints to attempt to guide developers into using the right parameters. These type hints can be enforced used a static type checker to ensure no hard errors.
+
+### Syntax 
+
+Syntax for gathering user data for event processing
+
+```python
+def get_raw_user_data(realm: Realm, user_profile: UserProfile, client_gravatar: bool,
+                      include_custom_profile_fields: bool=True) -> Dict[int, Dict[str, str]]:
+```
+
+### Semantics
+
+This method is used to gather the all of the relevant data on a user in a specified Realm. For example if they are an admin, what their email address is, what timezone they are in etc. Upon successfull completion of this method a dictionary will be returned containing keys and values relating to these attributes of a user in the realm.
+
+### Error Handling
+
+While there is no explicit error handling in this method, there are type hints to attempt to guide developers into using the right parameters. These type hints can be enforced used a static type checker to ensure no hard errors.
+
+### Data Types
+
+`UserProfile` : A model in the Zulip database representing a Zulip user's profile and personal information.
+
+`client_gravatar` : A bool that represents whether or not the user is using a Gravatar as their avatar.
+
+`queue_id` : The unique id of a queue in the Zulip system. String.
+
+`Realm` : A model in the zulip database which corresponds to a Realm hosted on a Zulip server. Contains the data for various properties within the Realm, as well as users in the Realm.
+
+`state` : A Dict that contains the current state of a zulip realm, including events and messages.
+
+`event` : A Dict that contains the information needed for applying an event to a client.
+
+### Error Handling
+
+As with the rest of the codebase there is little explicit error handling in this codebase. Once again most of the error handling is done with the use of type hints and a static type checker.
+
+An example of this type of error handling can be seen in the `get_raw_user_data` method header.
+
+```python
+def get_raw_user_data(realm: Realm, user_profile: UserProfile, client_gravatar: bool,
+                      include_custom_profile_fields: bool=True) -> Dict[int, Dict[str, str]]:
+```
+
+The methods in this interface are mainly used to retrieve information or apply information in bult, there is little actual business logic at work here and as such ther Zulip developers dont seem to have felt the need for any more explicit error handling.
+
+As with the rest of the codebase mypy is run as a static type checker ensuring that the type hints are strictly followed, and not allowing code utilizing mismatched typing into production.
+
+### Quality Attributes
+
+This interface demonstrates the Extensibility Quality Attribute. It provides an easy way for developers to add new types of events and have them be handled in one central area of the code, instead of creating new ways to process them scattered all over the codebase. This is also important for modifiablity of the existing code.
+
+### Rationale
+
+The Zulip developers have laid this Interface out in this way so that the Zulip codebase can remain clear and concise and loosely coupled. This interface is comprised largely of sprawling blocks of if statements checking every possible event type to find a match and having these huge blocks strewn thoughout the codebase would be both ugly and a terrible way to consolidate a codebase. By going through this tedious task in one central interface it is both quicker and easier to implement new methods and modify existing ones. This allows the Django codebase to be easily integrated with the Tornado codebase.
+
+### Usage Guide
+
+There are a couple of different ways to use this Interface, fetching initial state data, or updating state data with new events. Both of these usages are used to update the state of the Django web server and therefore the front-end. 
+
+When fetching initial data the developer must only know the `UserProfile` of the user who is fetching the data and the `event_types` that the User is looking to fetch. `event_types` can be left blank and all event types will be returned. The developer must also input the id of the queue that the events are being fetched from, this will almost always be the Tornado events queue.
+
+An example of this type of usage can be seen in the test_query test file for the Zerver bacakend.
+
+```python
+  fetch_initial_state_data(
+                    user_profile=user,
+                    event_types=None,
+                    queue_id='x',
+                    client_gravatar=False,
+                )
+```
+The other common usage of this Interface is to apply a particular event or events to a user. When using the Interface in this way the developer must include the State as well as the Event they are trying to send as Dicts. As well a UserProfile must be passed in.
+
+An example of this usage can be seen in the test_events.py file
+
+```python
+apply_events(hybrid_state, events, self.user_profile,
+                     client_gravatar=True, include_subscribers=include_subscribers)
+```
+
+## Component and Connector Rationale
+
+The Components comprising the Zulip system have clearly been chosen carefully, with performance being an extremely important goal of the application. The goal of Zulip to scale to tens of thousands of users means that the near real time performance that is being aimed for cannot be achieved unless every part of the system is chosen with this goal in mind, and optimized carefully. Zulip shows this by using multiple web servers and queues to achieve what they need, leveraging only the strengths of each component while keeping a tightly focused codebase. 
+
+The most important component in the Zulip system in terms of delivering reliable, near real time, performance for huge amounts of users (Quality Attribute #1) is the integration of a RabbitMQ queue system into the architecture. The use of a message queueing system such as RabbitMQ allows for all requests in the Zulip ecosystem to be responded to quickly. Not only is RabbitMQ used in Zulip to efficiently send events and other updates to users, it is also used to communicate information between the different Zulip web servers. While the Django web server connected to the front-end of the application is responsible for receiving the event actions from the Zulip users, these are promptly passed to the Tornado events server via a RabbitMQ queue for faster processing.[25] 
+
+At runtime there is both a Django web server handling front-end and non performance critical tasks, and a Tornado web server handling the time-critical Events system running in a Zulip instance in order to provide the best performance possible. Any user actions taken on the front end are sent to Django using an nginx web server and uWSGI. The Django web server is then used to process all non time and performance critical actions (clicking a button, typing a message, etc), and all events are passed to the Tornado web server. The Tornado server is suited to having extremely large amounts of connections open for long periods of time, and is thus ideal for Zulip to utilize in order to have a long polling response system in place.[31] Any request sent to the Zulip API or event queue bypass the Django server entirely and are sent straight to the Tornado event server. This allows for the fastest possible response time to any API requests, a vital part of fulfilling Quality Attribute #4. 
+
+The final part of the Zulip runtime system is persistent data store, which is handled with, in the default configuration, a PostgreSQL database. This database stores all of the long term information needed for a chat application such as Zulip to function, user logins, past messages etc. In order to maintain the fastest performance possible there was a design decision to put no connections to the database in the Tornado codebase[32]. Any data passed to and from the database requires a blocking call, which would slow down the Tornado server considerably. As such the database is only ever accessed from the Django server(Quality Attributes 1 and 4).
+ 
 
 ### References
 
@@ -602,3 +912,6 @@ Zulip can be configured to run more than one Tornado server and shard event traf
 27. Zulip System Scalability https://github.com/zulip/zulip/issues/54
 28. Zulip Configuration https://github.com/zulip/zulip/blob/cfa62700809584003468a982605ef724204a5f21/puppet/zulip/manifests/app_frontend_base.pp#L70
 29. Zulip Custom Database https://zulip.readthedocs.io/en/latest/production/deployment.html#using-zulip-with-amazon-rds-as-the-database
+30. Developer Comment on SimpleQueueClient https://github.com/zulip/zulip/blob/cdd035eac74ad058eddf225c58f1e07eea0f7f44/zerver/lib/queue.py#L21
+31. Zulip Event Delivery System https://zulip.readthedocs.io/en/latest/subsystems/events-system.html#delivery-system
+32. Zulip Architecture Overview https://github.com/zulip/zulip/blob/master/docs/overview/architecture-overview.md#django-and-tornado
