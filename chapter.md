@@ -27,8 +27,8 @@
     * Context Diagram
     * Behaviour Diagram
     * [Variability Guide](#Variability-Guide)
-    * [Component and Connector Interfaces](#Component and Connector Interfaces)
-    * [Component and Connector Rationale](#Component and Connector Rationale)
+    * [Component and Connector Interfaces](#Component-and-Connector-Interfaces)
+    * [Component and Connector Rationale](#Component-and-Connector-Rationale)
  10. Code Quality and Technical Debt
  11. Conclusion
 
