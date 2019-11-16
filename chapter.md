@@ -837,6 +837,10 @@ The methods in this interface are mainly used to retrieve information or apply i
 
 As with the rest of the codebase mypy is run as a static type checker ensuring that the type hints are strictly followed, and not allowing code utilizing mismatched typing into production.
 
+### Variability
+
+The variability in this Interface comes from the vast amount of options that can be given to the methods in the interface. A client can want to be updated an extremely large amount of different combinations of events and it is up to the developer to pass these in to the methods to ensure proper results. 
+
 ### Quality Attributes
 
 This interface demonstrates the Extensibility Quality Attribute. It provides an easy way for developers to add new types of events and have them be handled in one central area of the code, instead of creating new ways to process them scattered all over the codebase. This is also important for modifiablity of the existing code.
