@@ -668,7 +668,7 @@ def ensure_queue(self, queue_name: str, callback: Callable[[], None]) -> None:
 
 This method is used to ensure that a given queue has been declared. Upon calling, if the queue has already been declared then an empty callback will be called, if the queue has not already been declared then it will be declared, and then an empty callback will be called.
 
-## Error Handling 
+### Error Handling 
 
 While there is no explicit error handling in this method, there are type hints to attempt to guide developers into using the right parameters. These type hints can be enforced used a static type checker to ensure no hard errors.
 
