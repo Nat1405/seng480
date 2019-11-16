@@ -18,15 +18,17 @@
     * [Behaviour Diagram](#Behaviour-Diagram)
     * [Interfaces](#Interfaces)
     * [Module Rationale](#Module-Rationale)
- 9. Component and Connector View
+ 9. [Component and Connector View](#Component-and-Connector-View)
     * Primary Presentation
     * Element Catalog
       + Elements and Properties
       + Relations and Properties
       + Element Behaviour
     * Context Diagram
-    * Variability Guide
-    * Rationale
+    * Behaviour Diagram
+    * [Variability Guide](#Variability-Guide)
+    * [Component and Connector Interfaces](#Component and Connector Interfaces)
+    * [Component and Connector Rationale](#Component and Connector Rationale)
  10. Code Quality and Technical Debt
  11. Conclusion
 
@@ -525,7 +527,50 @@ These two systems come together in what is the most critical part of the Zulip a
 
 As a chat application the primary concern of Zulip is delivering and syncing data between users in real time fashion. Zulip accomplishes the performance and scalability quality attribute scenarios with smart usage of multiple specialized web servers, and a queueing system that ensures unimportant information can be updated when there is time, while important information can be updated instantly. When used together these modules allow Zulip to scale its real time status to exceed the expectations of its quality attribute scenarios. 
 
-## Interfaces
+# Component and Connector View
+
+## Primary Presentation
+
+![Primary Presentation](images/primary-presentation-componentconnector.png)
+
+## Element Catalog
+
+### Elements and Properties
+
+### Relations and Properties
+
+### Element Behaviour
+
+## Context Diagram
+
+![C and C Context Diagram](./images/c_and_c_context_diagram.png)
+
+## Behaviour Diagram
+
+![Behaviour Diagram](./images/behaviour-componentconnector.png)
+
+This diagram shows how Zulip allows an administrator to scale their production server through the configuration of queue processors. The main Zulip process can outsource the handling of expensive operations to these background workers. Using a single server with a multithreaded configuration, Zulip can handle roughly 1000 concurrent users [27]. The same server can scale to 10,000 users through running multiprocess queue processors at the expense of more RAM [28]. 
+
+1. System administrator sets the configuration to multiprocess in app_frontend_base.pp and restarts the Zulip production server.
+2. Supervisor reads the configuration from zulip.conf.template.erb and creates a separate process for each worker.
+3. Each worker is initialized from the appropriate subclass of QueueProcessingWorker based on its functionality, e.g. outgoing webhook, error report, or email sender.
+4. After establishing a connection, the worker can consume messages from RabbitMQ queues through the SimpleQueueClient interface.
+
+## Variability Guide
+
+**Alternative Databases**
+
+Out of the box, Zulip uses a default PostgreSQL configuration, but it is possible to swap in any remote database-as-a-service as long as it supports full-text search [29]. This can be configured in /etc/zulip/settings.py.
+
+**HTTP Requests**
+
+An administrator can configure the web server to use HTTP instead of HTTPS when communicating with the Zulip server. This can be configured in /etc/zulip/zulip.conf.
+
+**Multiple Tornado Instances**
+
+Zulip can be configured to run more than one Tornado server and shard event traffic by realm. This can be configured in puppet/zulip/manifests/app_frontend_base.pp.
+
+## Component and Connector Interfaces
 
 ## Interface Identity
 
@@ -663,7 +708,7 @@ This interface has little variability, as SimpleQueueClient, which encapsulates 
 
 ### Quality Attributes
 
-The primary quality attributes that this interface addresses are modifiability and performance. As the developers state in a comment at the beginning of the SimpleQueueClient class "This simple queuing library doesn't expose much of the power ofrabbitmq/pika's queuing system; its purpose is to just provide an interface for external files to put things into queues and take them out from bots without having to import pika code all over our codebase"[27]. This allows for new parts of the codebase to access the queue system without having to rewrite a queue management client. 
+The primary quality attributes that this interface addresses are modifiability and performance. As the developers state in a comment at the beginning of the SimpleQueueClient class "This simple queuing library doesn't expose much of the power ofrabbitmq/pika's queuing system; its purpose is to just provide an interface for external files to put things into queues and take them out from bots without having to import pika code all over our codebase"[30]. This allows for new parts of the codebase to access the queue system without having to rewrite a queue management client. 
 
 As well, easy access to a powerful queue system is what allows for the Zulip codebase to be highly performant. Having one ready to use queue client means that this performance can be easily extended to the entire Zulip codebase.
 
@@ -831,9 +876,10 @@ The Components comprising the Zulip system have clearly been chosen carefully, w
 
 The most important component in the Zulip system in terms of delivering reliable, near real time, performance for huge amounts of users (Quality Attribute #1) is the integration of a RabbitMQ queue system into the architecture. The use of a message queueing system such as RabbitMQ allows for all requests in the Zulip ecosystem to be responded to quickly. Not only is RabbitMQ used in Zulip to efficiently send events and other updates to users, it is also used to communicate information between the different Zulip web servers. While the Django web server connected to the front-end of the application is responsible for receiving the event actions from the Zulip users, these are promptly passed to the Tornado events server via a RabbitMQ queue for faster processing.[25] 
 
-At runtime there is both a Django web server handling front-end and non performance critical tasks, and a Tornado web server handling the time-critical Events system running in a Zulip instance in order to provide the best performance possible. Any user actions taken on the front end are sent to Django using an nginx web server and uWSGI. The Django web server is then used to process all non time and performance critical actions (clicking a button, typing a message, etc), and all events are passed to the Tornado web server. The Tornado server is suited to having extremely large amounts of connections open for long periods of time, and is thus ideal for Zulip to utilize in order to have a long polling response system in place.[28] Any request sent to the Zulip API or event queue bypass the Django server entirely and are sent straight to the Tornado event server. This allows for the fastest possible response time to any API requests, a vital part of fulfilling Quality Attribute #4. 
+At runtime there is both a Django web server handling front-end and non performance critical tasks, and a Tornado web server handling the time-critical Events system running in a Zulip instance in order to provide the best performance possible. Any user actions taken on the front end are sent to Django using an nginx web server and uWSGI. The Django web server is then used to process all non time and performance critical actions (clicking a button, typing a message, etc), and all events are passed to the Tornado web server. The Tornado server is suited to having extremely large amounts of connections open for long periods of time, and is thus ideal for Zulip to utilize in order to have a long polling response system in place.[31] Any request sent to the Zulip API or event queue bypass the Django server entirely and are sent straight to the Tornado event server. This allows for the fastest possible response time to any API requests, a vital part of fulfilling Quality Attribute #4. 
 
-The final part of the Zulip runtime system is persistent data store, which is handled with, in the default configuration, a PostgreSQL database. This database stores all of the long term information needed for a chat application such as Zulip to function, user logins, past messages etc. In order to maintain the fastest performance possible there was a design decision to put no connections to the database in the Tornado codebase[29]. Any data passed to and from the database requires a blocking call, which would slow down the Tornado server considerably. As such the database is only ever accessed from the Django server(Quality Attributes 1 and 4).
+The final part of the Zulip runtime system is persistent data store, which is handled with, in the default configuration, a PostgreSQL database. This database stores all of the long term information needed for a chat application such as Zulip to function, user logins, past messages etc. In order to maintain the fastest performance possible there was a design decision to put no connections to the database in the Tornado codebase[32]. Any data passed to and from the database requires a blocking call, which would slow down the Tornado server considerably. As such the database is only ever accessed from the Django server(Quality Attributes 1 and 4).
+ 
 
 ### References
 
@@ -863,6 +909,9 @@ The final part of the Zulip runtime system is persistent data store, which is ha
 24. Zulip Life of a Request https://zulip.readthedocs.io/en/latest/tutorials/life-of-a-request.html
 25. Zulip Queue System https://zulip.readthedocs.io/en/latest/subsystems/queuing.html
 26. Zulip Event System https://zulip.readthedocs.io/en/latest/subsystems/events-system.html
-27. Developer Comment on SimpleQueueClient https://github.com/zulip/zulip/blob/cdd035eac74ad058eddf225c58f1e07eea0f7f44/zerver/lib/queue.py#L21
-28. Zulip Event Delivery System https://zulip.readthedocs.io/en/latest/subsystems/events-system.html#delivery-system
-29. Zulip Architecture Overview https://github.com/zulip/zulip/blob/master/docs/overview/architecture-overview.md#django-and-tornado
+27. Zulip System Scalability https://github.com/zulip/zulip/issues/54
+28. Zulip Configuration https://github.com/zulip/zulip/blob/cfa62700809584003468a982605ef724204a5f21/puppet/zulip/manifests/app_frontend_base.pp#L70
+29. Zulip Custom Database https://zulip.readthedocs.io/en/latest/production/deployment.html#using-zulip-with-amazon-rds-as-the-database
+30. Developer Comment on SimpleQueueClient https://github.com/zulip/zulip/blob/cdd035eac74ad058eddf225c58f1e07eea0f7f44/zerver/lib/queue.py#L21
+31. Zulip Event Delivery System https://zulip.readthedocs.io/en/latest/subsystems/events-system.html#delivery-system
+32. Zulip Architecture Overview https://github.com/zulip/zulip/blob/master/docs/overview/architecture-overview.md#django-and-tornado
