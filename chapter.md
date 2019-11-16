@@ -537,9 +537,15 @@ As a chat application the primary concern of Zulip is delivering and syncing dat
 
 ### Elements and Properties
 
+* **Django Service:** Python WSGI server for serving Zulip's REST endpoints.
+* **Tornado Service:** Web server for handling Zulip's real-time push system.
+* **Event Queue**: Message queuing process - default implementation is RabbitMQ.
+* **Zulip Clients:** Desktop, web or mobile applications trying to send and retrieve data from the Zulip server.
+
 ### Relations and Properties
 
-### Element Behaviour
+* **Inter-process Call:** Call between two separate processes in the Zulip system, typically over TCP or some other socket implementation.
+* **Persistent Connection:** Connection maintained between the Zulip client and server to deliver real-time updates.
 
 ## Context Diagram
 
