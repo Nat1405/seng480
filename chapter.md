@@ -885,32 +885,6 @@ At runtime there is both a Django web server handling front-end and non performa
 The final part of the Zulip runtime system is persistent data store, which is handled with, in the default configuration, a PostgreSQL database. This database stores all of the long term information needed for a chat application such as Zulip to function, user logins, past messages etc. In order to maintain the fastest performance possible there was a design decision to put no connections to the database in the Tornado codebase[32]. Any data passed to and from the database requires a blocking call, which would slow down the Tornado server considerably. As such the database is only ever accessed from the Django server(Quality Attributes 1 and 4).
  
 
-#Component and Connector View
-
-## Primary Presentation
-
-![Primary Presentation](images/primary-presentation-componentconnector.png)
-
-## Element Catalog
-
-### Elements and Properties
-
-* **Django Service:** Python WSGI server for serving Zulip's REST endpoints.
-* **Tornado Service:** Web server for handling Zulip's real-time push system.
-* **Event Queue**: Message queuing process - default implementation is RabbitMQ.
-* **Zulip Clients:** Desktop, web or mobile applications trying to send and retrieve data from the Zulip server.
-
-### Relations and Properties
-
-* **Inter-process Call:** Call between two separate processes in the Zulip system, typically over TCP or some other socket implementation.
-* **Persistent Connection:** Connection maintained between the Zulip client and server to deliver real-time updates.
-
-## Context Diagram
-
-## Variability Guide
-
-## Rationale 
-
 ### References
 
 1. ACM Code of Ethics and Professional Conduct https://www.acm.org/code-of-ethics   
