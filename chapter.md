@@ -891,6 +891,54 @@ At runtime there is both a Django web server handling front-end and non performa
 The final part of the Zulip runtime system is persistent data store, which is handled with, in the default configuration, a PostgreSQL database. This database stores all of the long term information needed for a chat application such as Zulip to function, user logins, past messages etc. In order to maintain the fastest performance possible there was a design decision to put no connections to the database in the Tornado codebase[32]. Any data passed to and from the database requires a blocking call, which would slow down the Tornado server considerably. As such the database is only ever accessed from the Django server(Quality Attributes 1 and 4).
  
 
+# Architecture Analysis
+
+While documenting the Zulip ecosystem, some time was spent assessing the quality of Zulip's code (primarily the core Django project, `zerver`), and cataloging potential technical debt in the system. Through the course of the analysis, several static analysis tools were used to identify potential future pain points in Zulip's codebase and quantify the amount of existing technical debt.
+
+The Zulip development team currently uses two static analysis tools to augment the quality of the codebase [33]: 
+
+* [Codecov](https://codecov.io/gh/zulip/zulip/commits) determines the line coverage of Zulip's unit tests.
+* [MyPy](http://mypy-lang.org/) enforces static typing practices in the codebase (Python is typically a dynamically typed language).
+
+In addition to these tools, the development team uses several linters to check for potential code quality issues [34]. To find other related issues, our team focused on tools which found more general code quality issues (for example, potential injection vulnerabilities in subprocess calls). The results included some interesting insights into the design decisions and focuses of the development team.
+
+## SonarQube Analysis
+
+[SonarQube](http://sonarqube.org) is a static analysis tool which can detect bugs, 'code smells' (potential indications of an architectural issue) and security vulnerabilities in a wide variety of codebases. The SonarQube analysis used for this report can be found here: https://sonarcloud.io/dashboard?id=CDFriend_zulip. 
+
+For Zulip's core Python codebase, SonarQube initially identified the following issues: 
+* 1 bug
+* 2 vulnerabilities
+* 505 code smells
+* 418 security hotspots
+
+Of these, SonarQube considered 134 to have a severity of critical or higher. It also reported a total of 3.3% code duplication (primarily in deploy scripts and SQL configuration files), which is fairly good compared to other open-source projects listed on SonarCloud [35].
+
+It's worth noting that SonarQube is intended to direct development efforts, and does occasionaly produce false positives when identifying issues. Upon further inspection, the number of total viable issues in Zulip's codebase was significantly less than initially reported by the static analyzer. Sifting though the reported issues, our team was able to find a few core issues which could be resolved to improve Zulip's code quality.
+
+### SQL Parameter Injection Vulnerabilities
+
+![SQL Injection Vulnerability](images/sql-injection.png)
+
+Zulip includes several SQL queries which do not use Django's built-in ORM fuctionality. These queries are heavily optimized for performance, and often use Python string formatting to populate parameters, which is considered bad practice when programatically interacting with an SQL database. When analyzing the Zulip codebase, SonarQube flagged several of these queries as unsafe.
+
+Investigating further, the flagged queries did not appear to be vulnerable to SQL injection attacks, since all the parameters provided are numbers. Typically for an SQL injection attack to occur, a text parameter from a user-accessible field must be embedded into an SQL query.
+
+Although SonarQube did not identify any SQL injection vulnerabilities, it does indicate a potential issue: if a new developer were to introduce a vulnerability, there wouldn't be an automatic means to detect the issue. To ensure the vulnerability did not enter the Zulip mainline, the development team would have to rely on a rigorous code review process.
+
+### Cognitive Complexity of Functions
+
+![High Cognitive Complexity Function](images/function-cognitive-complexity.png)
+
+SonarQube also reported that several functions in Zulip had very high cognitive complexity. These functions have many possible code paths, and can therefore be very difficult to fully understand. Several functions with a large number of parameters were also flagged, outlining a similar problem.
+
+To reduce cognitive complexity in Zulip's codebase, developers could attempt to further modularize the core code. The number of function parameters could be reduced by consilidating related data into structures (likely implemented as Python classes).
+
+## Recommendations
+
+* Ensure a rigorous code review process (either human or automated) is used when analyzing new pull requests to ensure new SQL injection vulnerabilities are not introduced.
+* Reduce cognitive complexity in new and existing functions by increasing code modularity and combining related data elements into Python classes.
+
 ### References
 
 1. ACM Code of Ethics and Professional Conduct https://www.acm.org/code-of-ethics   
@@ -925,3 +973,6 @@ The final part of the Zulip runtime system is persistent data store, which is ha
 30. Developer Comment on SimpleQueueClient https://github.com/zulip/zulip/blob/cdd035eac74ad058eddf225c58f1e07eea0f7f44/zerver/lib/queue.py#L21
 31. Zulip Event Delivery System https://zulip.readthedocs.io/en/latest/subsystems/events-system.html#delivery-system
 32. Zulip Architecture Overview https://github.com/zulip/zulip/blob/master/docs/overview/architecture-overview.md#django-and-tornado
+33. Zulip core repository: https://github.com/zulip/zulip
+34. Zulip Linters: https://zulip.readthedocs.io/en/latest/testing/linters.html
+35. About SonarCloud https://sonarcloud.io/about
