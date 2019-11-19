@@ -902,6 +902,22 @@ The Zulip development team currently uses two static analysis tools to augment t
 
 In addition to these tools, the development team uses several linters to check for potential code quality issues [34]. To find other related issues, our team focused on tools which found more general code quality issues (for example, potential injection vulnerabilities in subprocess calls). The results included some interesting insights into the design decisions and focuses of the development team.
 
+By looking through the Zulip issue tracker, official documentation and reflection on Zulip's architecture we discovered technical debt in Zulip's [soft-deactivation system](https://zulip.readthedocs.io/en/latest/subsystems/sending-messages.html#soft-deactivation). Zulip has a stated goal of supporting up to 10,000 users in a single realm[](). A [GitHub issue](https://github.com/zulip/zulip/issues/5194) filed by Tim Abbot noted that Zulip was struggling to hit it's performance requirements on chat.zulip.org for streams with only ~ 2300 users. He noted that by defering work for inactive users, performance requirements could be met. However, this solution does not seem to scale to streams with thousands of active users.
+
+## PyLint Analysis
+
+We used [PyLint]() to run a static analysis of source code located in the zulip/zerver directory.
+
+PyLint returns five levels of errors, four that were present in it's automated report:
+* \[R\]efactor
+* \[C\]onvention: coding standard violation
+* \[W\]arning: style or minor programming issues
+* \[E\]rror: important programming issues
+
+By using grep we discovered several error-level messages, most of which were for "instance of object has no member" and various import errors we assume come from running the analysis on the zerver directory directly. 
+
+The overall score given was 6.27 out of 10.
+
 ## SonarQube Analysis
 
 [SonarQube](http://sonarqube.org) is a static analysis tool which can detect bugs, 'code smells' (potential indications of an architectural issue) and security vulnerabilities in a wide variety of codebases. The SonarQube analysis used for this report can be found here: https://sonarcloud.io/dashboard?id=CDFriend_zulip. 
